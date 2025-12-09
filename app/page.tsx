@@ -135,7 +135,7 @@ export default function Home() {
         {/* Additional Background Effects */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Floating Particles */}
-          {[...Array(12)].map((_, i) => (
+          {/* {[...Array(12)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-white/20 rounded-full"
@@ -155,7 +155,7 @@ export default function Home() {
                 ease: "easeInOut"
               }}
             />
-          ))}
+          ))} */}
         </div>
       </div>
 

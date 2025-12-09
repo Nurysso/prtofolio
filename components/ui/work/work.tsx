@@ -9,9 +9,8 @@ const cards = [
     description: 'Modern alternative to rm, with customizable TUI and restore feature',
     tech: ['GoLang', 'TUI'],
     color: 'from-red-700 via-rose-600 to-pink-500',
-    icon:'globe.svg',
+    link: 'https://www.dawood.page/projects/vanish',
     status: 'Live',
-    link: '/projects/vanish'
   },
   {
     id: 2,
@@ -19,29 +18,26 @@ const cards = [
     description: 'Browser extension to change tab UI and have customizable quicklinks',
     tech: ['JavaScript', 'WebExt'],
     color: 'from-orange-600 via-amber-500 to-yellow-400',
-    icon:'globe.svg',
+    link: 'https://github.com/Nurysso/venus',
     status: 'Beta',
-    link: 'https://github.com/Aelune/venus'
   },
   {
     id: 3,
     title: 'Hecate',
     description: 'Hyprland dotfiles and collection of apps to improve user experience',
-    tech: ['Hyprland', 'Config'],
+    tech: ['GoLang', 'Typescript', 'Shell'],
     color: 'from-purple-700 via-indigo-600 to-blue-500',
-    icon:'globe.svg',
+    link: 'https://github.com/Nurysso/hecate',
     status: 'Live',
-    link: 'https://github.com/Aelune/hecate'
   },
   {
     id: 4,
-    title: 'Janus',
+    title: 'tyr',
     description: 'Template creation tool for multiple types of projects',
-    tech: ['Rust', 'CLI'],
+    tech: ['Rust', 'CLI', 'ML'],
     color: 'from-green-600 via-emerald-500 to-teal-400',
-    icon:'globe.svg',
-    status: 'Beta',
-    link: 'https://github.com/Aelune/janus'
+    link: 'https://github.com/Nurysso/tyr',
+    status: 'Live',
   },
   {
     id: 5,
@@ -49,9 +45,17 @@ const cards = [
     description: 'Custom Linux kernel build for fun and learning',
     tech: ['C', 'Kernel'],
     color: 'from-blue-700 via-cyan-600 to-indigo-500',
-    icon:'globe.svg',
+    link: 'https://github.com/Nurysso/athena',
     status: 'Research',
-    link: 'https://github.com/Aelune/athena'
+  },
+  {
+    id: 6,
+    title: 'EULIX',
+    description: 'Local code comprehension tool',
+    tech: ['Rust', 'GoLang', 'SQL', 'redis', 'llm'],
+    color: 'from-indigo-700 via-purple-600 to-pink-500',
+    link: 'https://github.com/Nurysso/eulix',
+    status: 'Live',
   }
 ];
 
@@ -98,7 +102,7 @@ const Work = () => {
   return (
     <div
       ref={sectionRef}
-      className="relative w-full min-h-screen overflow-hidden bg-gradient-to-b from-black/50 via-transparent to-black/30 py-12 md:py-0"
+      className="relative w-full min-h-screen overflow-hidden py-12 md:py-0"
     >
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 pointer-events-none">

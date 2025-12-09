@@ -1,6 +1,6 @@
 /*
 This will generate dynamic OG images at runtime!
-Access them via: https://dwukn.vercel.app/api/og?title=Your+Title
+Access them via: https://dawood.page/api/og?title=dawood+developer
 */
 
 import { ImageResponse } from 'next/og'
@@ -12,7 +12,7 @@ export const runtime = 'edge'
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
 
-  const title = searchParams.get('title') || 'Dawood Khan (Aelune)'
+  const title = searchParams.get('title') || 'Dawood Khan (Nurysso)'
   const subtitle = searchParams.get('subtitle') || 'Full Stack Developer & Open Source Creator'
   const project = searchParams.get('project') || ''
 

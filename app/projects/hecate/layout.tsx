@@ -53,17 +53,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Hecate - Dynamic Hyprland Dotfiles",
     description: "Transform your Hyprland desktop with automatic wallpaper-based theming.",
-    url: "https://dwukn.vercel.app/projects/hecate",
+    url: "https://dawood.page/projects/hecate",
     images: [
       {
-        url: "https://dwukn.vercel.app/projects/hecate-og.jpg",
+        url: "https://dawood.page/projects/hecate-og.jpg",
         width: 1200,
         height: 630,
       }
     ],
   },
   alternates: {
-    canonical: "https://dwukn.vercel.app/projects/hecate",
+    canonical: "https://dawood.page/projects/hecate",
   },
 }
 
@@ -75,9 +75,9 @@ const hecateStructuredData = {
   author: {
     "@type": "Person",
     name: "Dawood Khan",
-    alternateName: "Aelune"
+    alternateName: "Nurysso"
   },
-  codeRepository: "https://github.com/Aelune/Hecate",
+  codeRepository: "https://github.com/Nurysso/Hecate",
   programmingLanguage: "Shell",
   operatingSystem: "Linux",
   targetProduct: {

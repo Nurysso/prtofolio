@@ -8,7 +8,7 @@ export const data = [
     // icon: '🗑️',
     icon:'globe.svg',
     status: 'Live',
-    link: 'https://github.com/Aelune/vanish'
+    link: 'https://github.com/Nurysso/vanish'
   },
   {
     id: 2,

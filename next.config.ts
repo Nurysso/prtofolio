@@ -83,10 +83,10 @@ const nextConfig: NextConfig = {
         has: [
           {
             type: 'host',
-            value: 'www.dwukn.vercel.app',
+            value: 'www.dawood.page',
           },
         ],
-        destination: 'https://dwukn.vercel.app/:path*',
+        destination: 'https://dawood.page/:path*',
         permanent: true,
       },
     ]

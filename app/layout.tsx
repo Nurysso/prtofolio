@@ -38,7 +38,7 @@ const gloock = Gloock({
 });
 
 export const metadata: Metadata = {
-  title: "Dawood Khan (Aelune) - Full Stack Developer | GoLang, Python, Web Technologies & Linux Systems | Open Source Creator",
+  title: "Dawood Khan (Nurysso) - Full Stack Developer | GoLang, Python, Web Technologies & Linux Systems | Open Source Creator",
   description: "Full Stack Developer & Open Source Creator specializing in GoLang, Python, and modern web technologies. Creator of Vanish (safe file deletion CLI), Hecate (Hyprland dotfiles), and Venus. Building system tools and beautiful TUI applications. Available for freelance work.",
   icons: {
     icon: '/favicon.png',
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
   keywords: [
     // Personal Branding
     "Dawood Khan",
-    "Aelune",
-    "Aelune developer",
+    "Nurysso",
+    "Nurysso developer",
     "Dwukn",
     "Dawood Khan portfolio",
 
@@ -88,6 +88,9 @@ export const metadata: Metadata = {
     "Hyprland setup",
     "Linux dotfiles",
 
+    "bubbleTea",
+    "Tyr",
+
     // Technologies
     "Bubble Tea framework",
     "Lip Gloss styling",
@@ -111,10 +114,10 @@ export const metadata: Metadata = {
     "India Developer",
   ],
   authors: [
-    { name: "Dawood Khan", url: "https://dwukn.vercel.app" },
-    { name: "Aelune" }
+    { name: "Dawood Khan", url: "https://dawood.page" },
+    { name: "Nurysso" }
   ],
-  creator: "Dawood Khan (Aelune)",
+  creator: "Dawood Khan (Nurysso)",
   publisher: "Dawood Khan",
 
   robots: {
@@ -128,42 +131,41 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://dwukn.vercel.app',
-    title: "Dawood Khan (Aelune) - Full Stack Developer & Open Source Creator",
+    url: 'https://dawood.page',
+    title: "Dawood Khan (Nurysso) - Full Stack Developer & Open Source Creator",
     description: "Creator of Vanish (safe file deletion CLI with recovery), Hecate (dynamic Hyprland theming), and other open-source tools. Specializing in GoLang, Python, and beautiful applications.",
-    siteName: 'Dawood Khan - Aelune Portfolio',
-    // images: [
-    //   {
-    //     url: 'https://dwukn.vercel.app/og-image.jpg',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Dawood Khan Portfolio - Creator of Vanish CLI and Hecate Hyprland',
-    //   },
+    siteName: 'Dawood Khan - Nurysso Portfolio',
     images: [
       {
-        url: '/api/og?title=Dawood%20Khan&subtitle=Full%20Stack%20Developer',
+        url: 'https://https://dawood.page/og-image.jpg',
         width: 1200,
         height: 630,
+        alt: 'Dawood Khan Portfolio - Creator of Vanish CLI and Hecate Hyprland',
       },
+    // images: [
+    //   {
+    //     url: '/api/og?title=Dawood%20Khan&subtitle=Full%20Stack%20Developer',
+    //     width: 1200,
+    //     height: 630,
+    //   },
     ],
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: "Dawood Khan (Aelune) - Full Stack Developer",
+    title: "Dawood Khan (Nurysso) - Full Stack Developer",
     description: "Open Source Creator | Vanish CLI • Hecate Hyprland • Venus | GoLang & Web Developer | Building beautiful terminal applications",
-    images: ['https://dwukn.vercel.app/og-image.jpg'],
+    images: ['https://dawood.page/og-image.jpg'],
     creator: '@dwukn',
   },
 
-  metadataBase: new URL('https://dwukn.vercel.app'),
+  metadataBase: new URL('https://dawood.page'),
 
   alternates: {
-    canonical: 'https://dwukn.vercel.app',
+    canonical: 'https://dawood.page',
   },
 
   category: 'technology',
@@ -186,15 +188,15 @@ export const metadata: Metadata = {
 //   "@context": "https://schema.org",
 //   "@type": "Person",
 //   name: "Dawood Khan",
-//   alternateName: "Aelune",
-//   url: "https://dwukn.vercel.app",
-//   image: "https://dwukn.vercel.app/og-image.jpg",
+//   alternateName: "Nurysso",
+//   url: "https://dawood.page",
+//   image: "https://dawood.page/og-image.jpg",
 //   jobTitle: "Full Stack Developer",
 //   description: "Full Stack Developer and Open Source Creator specializing in GoLang, Rust, and system programming",
 //   sameAs: [
-//     "https://github.com/Aelune",
+//     "https://github.com/Nurysso",
 //     "https://linkedin.com/in/dawood-khan",
-//     "https://youtube.com/@Aelune",
+//     "https://youtube.com/@Nurysso",
 //     "https://twitter.com/dwukn"
 //   ],
 //   knowsAbout: [
@@ -206,7 +208,7 @@ export const metadata: Metadata = {
 //       "@type": "SoftwareApplication",
 //       name: "Vanish",
 //       description: "A modern, safe file deletion tool with recovery capabilities",
-//       url: "https://github.com/Aelune/vanish",
+//       url: "https://github.com/Nurysso/vanish",
 //       applicationCategory: "DeveloperApplication",
 //       operatingSystem: "Linux, macOS, Windows",
 //     },
@@ -214,7 +216,7 @@ export const metadata: Metadata = {
 //       "@type": "SoftwareSourceCode",
 //       name: "Hecate",
 //       description: "Dynamic Hyprland dotfiles with intelligent theming",
-//       codeRepository: "https://github.com/Aelune/Hecate",
+//       codeRepository: "https://github.com/Nurysso/Hecate",
 //       programmingLanguage: "Shell",
 //     }
 //   ]
@@ -222,7 +224,7 @@ export const metadata: Metadata = {
 
 // Vanish Project Page Metadata
 export const vanishMetadata: Metadata = {
-  title: "Vanish - Safe File Deletion Tool with Recovery | Modern CLI by Aelune",
+  title: "Vanish - Safe File Deletion Tool with Recovery | Modern CLI by Nurysso",
   description: "Vanish (vx) is a modern, safe file deletion tool with recovery capabilities and beautiful TUI interface. Never lose important files again with pattern-based restoration, 8 themes, and comprehensive file management. Built with GoLang and Bubble Tea.",
   keywords: [
     "Vanish CLI",
@@ -278,8 +280,8 @@ const jsonLd = {
   '@type': 'Person',
   name: 'Dawood Khan',
   alternateName: 'Dwukn',
-  url: 'https://dwukn.vercel.app',
-  image: 'https://dwukn.vercel.app/og-image.jpg',
+  url: 'https://dawood.page',
+  image: 'https://dawood.page/og-image.jpg',
   jobTitle: 'Full Stack Developer',
   worksFor: {
     '@type': 'Organization',
@@ -307,7 +309,7 @@ const jsonLd = {
   ],
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': 'https://dwukn.vercel.app'
+    '@id': 'https://dawood.page'
   }
 };
 
@@ -325,7 +327,7 @@ export default function RootLayout({
         />
          <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-              {/* <link rel="canonical" href="https://dwukn.vercel.app" /> */}
+              {/* <link rel="canonical" href="https://dawood.page" /> */}
       </head>
       <body
         className={`${roboto.variable} ${inknut.variable} ${jacques.variable} ${hand.variable} ${gloock.variable} antialiased`}

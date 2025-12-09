@@ -224,8 +224,8 @@ export default function VanishLanding() {
   };
 
   const installScripts = {
-    curl: 'curl -LsSf https://raw.githubusercontent.com/Aelune/vanish/main/install.sh | sh',
-    wget: 'wget -qO- https://raw.githubusercontent.com/Aelune/vanish/main/install.sh | sh'
+    curl: 'curl -LsSf https://raw.githubusercontent.com/Nurysso/vanish/main/install.sh | sh',
+    wget: 'wget -qO- https://raw.githubusercontent.com/Nurysso/vanish/main/install.sh | sh'
   };
 
   const theme = themes[currentTheme];
@@ -384,7 +384,7 @@ export default function VanishLanding() {
                 Download Vanish
               </a>
               <a
-                href="https://github.com/Aelune/vanish"
+                href="https://github.com/Nurysso/vanish"
                 className="bg-slate-700 hover:bg-slate-600 border-2 border-slate-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center gap-3 min-w-[200px]"
               >
                 <Github className="w-5 h-5" />
@@ -394,7 +394,7 @@ export default function VanishLanding() {
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
               <a
-                href="https://github.com/Aelune/vanish/issues"
+                href="https://github.com/Nurysso/vanish/issues"
                 className="transition-colors duration-300 flex items-center gap-2 text-sm"
                 style={{ color: '#94a3b8' }}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
@@ -404,7 +404,7 @@ export default function VanishLanding() {
                 Report Issues
               </a>
               <a
-                href="https://github.com/Aelune/vanish/discussions"
+                href="https://github.com/Nurysso/vanish/discussions"
                 className="transition-colors duration-300 flex items-center gap-2 text-sm"
                 style={{ color: '#94a3b8' }}
                 onMouseEnter={(e) => e.currentTarget.style.color = theme.accent}
@@ -684,21 +684,21 @@ export default function VanishLanding() {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <a
-                    href="https://github.com/Aelune/vanish"
+                    href="https://github.com/Nurysso/vanish"
                     className="bg-slate-700/80 hover:bg-slate-600 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex flex-col items-center gap-2 group border-2 border-slate-600/50 hover:border-slate-500"
                   >
                     <Github className="w-6 h-6 group-hover:scale-110 transition-transform" />
                     <span>Source Code</span>
                   </a>
                   <a
-                    href="https://github.com/Aelune/vanish/issues"
+                    href="https://github.com/Nurysso/vanish/issues"
                     className="bg-slate-700/80 hover:bg-slate-600 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex flex-col items-center gap-2 group border-2 border-slate-600/50 hover:border-slate-500"
                   >
                     <AlertCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
                     <span>Report Issues</span>
                   </a>
                   <a
-                    href="https://github.com/Aelune/vanish/discussions"
+                    href="https://github.com/Nurysso/vanish/discussions"
                     className="bg-slate-700/80 hover:bg-slate-600 text-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 flex flex-col items-center gap-2 group border-2 border-slate-600/50 hover:border-slate-500"
                   >
                     <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
@@ -726,21 +726,21 @@ export default function VanishLanding() {
               </p>
               <div className="flex gap-4">
                 <a
-                  href="https://github.com/Aelune/vanish"
+                  href="https://github.com/Nurysso/vanish"
                   className="text-slate-400 hover:text-white transition-colors"
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://github.com/Aelune/vanish/discussions"
+                  href="https://github.com/Nurysso/vanish/discussions"
                   className="text-slate-400 hover:text-white transition-colors"
                   aria-label="Discussions"
                 >
                   <MessageSquare className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://github.com/Aelune/vanish/issues"
+                  href="https://github.com/Nurysso/vanish/issues"
                   className="text-slate-400 hover:text-white transition-colors"
                   aria-label="Issues"
                 >
@@ -754,19 +754,19 @@ export default function VanishLanding() {
               <h4 className="text-white font-semibold mb-4">Resources</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="https://github.com/Aelune/vanish#readme" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish#readme" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <BookOpen className="w-4 h-4" />
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/Aelune/vanish/releases" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish/releases" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <Download className="w-4 h-4" />
                     Releases
                   </a>
                 </li>
                 {/* <li>
-                  <a href="https://github.com/Aelune/vanish/blob/main/CHANGELOG.md" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish/blob/main/CHANGELOG.md" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <FileText className="w-4 h-4" />
                     Changelog
                   </a>
@@ -779,19 +779,19 @@ export default function VanishLanding() {
               <h4 className="text-white font-semibold mb-4">Community</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="https://github.com/Aelune/vanish/discussions" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish/discussions" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <Users className="w-4 h-4" />
                     Discussions
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/Aelune/vanish/issues" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish/issues" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" />
                     Report Bug
                   </a>
                 </li>
                 <li>
-                  <a href="https://github.com/Aelune/vanish/pulls" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
+                  <a href="https://github.com/Nurysso/vanish/pulls" className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2">
                     <Code className="w-4 h-4" />
                     Contribute
                   </a>

@@ -43,7 +43,7 @@ const gloock = Gloock({
 });
 
 export const metadata: Metadata = {
-  title: "Vanish - Safe File Deletion Tool | Modern CLI by Aelune",
+  title: "Vanish - Safe File Deletion Tool | Modern CLI by Nurysso",
   description: "Vanish (vx) is a modern, safe file deletion tool with recovery capabilities and beautiful TUI interface. Built with GoLang and Bubble Tea framework. 8 themes, pattern-based restoration, and comprehensive file management.",
   keywords: [
     "Vanish CLI", "safe file deletion", "file recovery tool", "rm alternative",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Vanish - Modern Safe File Deletion Tool",
     description: "Safe file deletion with recovery, beautiful TUI, and 8 themes. A modern alternative to rm.",
-    url: "https://dwukn.vercel.app/projects/vanish",
+    url: "https://dawood.page/projects/vanish",
     images: [
       {
         url: '/api/og?title=Vanish&subtitle=Safe%20File%20Deletion%20Tool&project=CLI%20Tool',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: "https://dwukn.vercel.app/projects/vanish",
+    canonical: "https://dawood.page/projects/vanish",
   },
 }
 
@@ -76,18 +76,18 @@ const vanishStructuredData = {
   author: {
     "@type": "Person",
     name: "Dawood Khan",
-    alternateName: "Aelune"
+    alternateName: "Nurysso"
   },
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "USD"
   },
-  url: "https://github.com/Aelune/vanish",
-  downloadUrl: "https://github.com/Aelune/vanish/releases",
+  url: "https://github.com/Nurysso/vanish",
+  downloadUrl: "https://github.com/Nurysso/vanish/releases",
   softwareVersion: "0.9.0",
   programmingLanguage: "Go",
-  screenshot: "https://dwukn.vercel.app/projects/vanish-screenshot.jpg"
+  screenshot: "https://dawood.page/projects/vanish-screenshot.jpg"
 }
 
 export default function RootLayout({

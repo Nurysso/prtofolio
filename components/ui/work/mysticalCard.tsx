@@ -9,7 +9,7 @@ interface Project {
   description: string;
   tech: string[];
   color: string;
-  icon: string;
+  icon?: string;
   status: string;
 }
 
@@ -42,7 +42,7 @@ const MysticalCard: React.FC<MysticalCardProps> = ({ project }) => {
         "
         style={{
           background: `linear-gradient(135deg, ${color})`,
-          backdropFilter: "blur(20px)",
+          backdropFilter: "blur(10px)",
           border: "1px solid rgba(147, 197, 253, 0.2)",
           boxShadow: `
             0 8px 32px 0 rgba(30, 58, 138, 0.25),
@@ -51,13 +51,7 @@ const MysticalCard: React.FC<MysticalCardProps> = ({ project }) => {
           `,
         }}
       >
-        {/* Ancient Greek Border Pattern */}
-        <div className="absolute inset-0 rounded-2xl pointer-events-none">
-          <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-transparent via-blue-300/60 to-transparent"></div>
-          <div className="absolute bottom-0 left-4 right-4 h-[2px] bg-gradient-to-r from-transparent via-blue-300/60 to-transparent"></div>
-          <div className="absolute left-0 top-4 bottom-4 w-[2px] bg-gradient-to-b from-transparent via-blue-300/60 to-transparent"></div>
-          <div className="absolute right-0 top-4 bottom-4 w-[2px] bg-gradient-to-b from-transparent via-blue-300/60 to-transparent"></div>
-        </div>
+
 
         {/* Corner Ornaments */}
         <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-blue-300/50 rounded-tl-lg"></div>
@@ -65,39 +59,8 @@ const MysticalCard: React.FC<MysticalCardProps> = ({ project }) => {
         <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2 border-blue-300/50 rounded-bl-lg"></div>
         <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-blue-300/50 rounded-br-lg"></div>
 
-        {/* Mystical Glow Effect */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-blue-900/30 via-transparent to-slate-400/10 opacity-60 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 via-black/10 to-transparent pointer-events-none"></div>
 
-        {/* Floating Particles Effect */}
-        <motion.div
-          className="absolute top-3 right-3 w-1 h-1 bg-blue-300/80 rounded-full pointer-events-none"
-          animate={{
-            y: [-2, -8, -2],
-            opacity: [0.3, 1, 0.3],
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute top-6 right-6 w-0.5 h-0.5 bg-slate-300/60 rounded-full pointer-events-none"
-          animate={{
-            y: [-1, -6, -1],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
 
         {/* Project Icon */}
         {icon && (

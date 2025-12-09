@@ -8,7 +8,7 @@ export default function HecateWebsite() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeFeature, setActiveFeature] = useState(0);
 
-  const installCommand = "curl -fsSL https://raw.githubusercontent.com/Aelune/Hecate/main/install.sh | bash";
+  const installCommand = "curl -fsSL https://raw.githubusercontent.com/Nurysso/Hecate/main/install.sh | bash";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -275,7 +275,7 @@ export default function HecateWebsite() {
                 </a>
               ))}
               <a
-                href="https://github.com/Aelune/Hecate"
+                href="https://github.com/Nurysso/Hecate"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-[#006989] to-[#007ba3] text-[#eaebed] rounded-xl transition-all duration-300 font-bold shadow-[0_0_20px_rgba(0,105,137,0.4)] hover:shadow-[0_0_40px_rgba(0,105,137,0.8)] hover:scale-110 overflow-hidden group"
@@ -367,7 +367,7 @@ export default function HecateWebsite() {
             {/* Mega CTA buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
               <a
-                href="https://github.com/Aelune/Hecate"
+                href="https://github.com/Nurysso/Hecate"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center space-x-4 px-14 py-7 bg-gradient-to-r from-[#006989] via-[#007ba3] to-[#006989] rounded-2xl text-2xl font-black transition-all duration-500 transform hover:scale-110 overflow-hidden shadow-[0_0_50px_rgba(0,105,137,0.6)] hover:shadow-[0_0_80px_rgba(0,105,137,1)] bg-[length:200%_100%] hover:bg-right"
@@ -525,8 +525,8 @@ export default function HecateWebsite() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {[
-              { title: "INSTALLATION", subtitle: "Lightning-fast setup", src: "https://raw.githubusercontent.com/Aelune/Hecate/main/assets/gifs/hecate-install.gif", emoji: "⚡" },
-              { title: "LIVE DEMO", subtitle: "Dynamic theming in action", src: "https://raw.githubusercontent.com/Aelune/Hecate/main/assets/gifs/hecate-demo.gif", emoji: "🎨" }
+              { title: "INSTALLATION", subtitle: "Lightning-fast setup", src: "https://raw.githubusercontent.com/Nurysso/Hecate/main/assets/gifs/hecate-install.gif", emoji: "⚡" },
+              { title: "LIVE DEMO", subtitle: "Dynamic theming in action", src: "https://raw.githubusercontent.com/Nurysso/Hecate/main/assets/gifs/hecate-demo.gif", emoji: "🎨" }
             ].map((demo, index) => (
               <div key={index} className="space-y-8 group">
                 <div className="flex items-center justify-between">
@@ -701,7 +701,7 @@ export default function HecateWebsite() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-8">
                   <a
-                    href="https://github.com/Aelune/Hecate"
+                    href="https://github.com/Nurysso/Hecate"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group/btn relative flex items-center space-x-4 px-16 py-8 bg-gradient-to-r from-[#006989] via-[#007ba3] to-[#006989] rounded-3xl text-3xl font-black transition-all duration-500 transform hover:scale-110 overflow-hidden shadow-[0_0_60px_rgba(0,105,137,1)] hover:shadow-[0_0_100px_rgba(0,105,137,1)] bg-[length:200%_100%] hover:bg-right"
@@ -745,7 +745,7 @@ export default function HecateWebsite() {
             <p className="text-3xl text-[#006989] font-black">TRANSFORM YOUR DESKTOP</p>
 
             <div className="flex items-center justify-center space-x-8 text-lg text-[#eaebed]/60">
-              <a href="https://github.com/Aelune/Hecate" target="_blank" rel="noopener noreferrer" className="hover:text-[#006989] transition-colors duration-300 font-bold">GitHub</a>
+              <a href="https://github.com/Nurysso/Hecate" target="_blank" rel="noopener noreferrer" className="hover:text-[#006989] transition-colors duration-300 font-bold">GitHub</a>
               <span>•</span>
               <a href="#features" className="hover:text-[#006989] transition-colors duration-300 font-bold">Features</a>
               <span>•</span>
@@ -758,13 +758,13 @@ export default function HecateWebsite() {
               <p className="text-[#eaebed]/60 text-lg">
                 Made with <span className="text-red-500 text-2xl" style={{ animation: 'pulse 1s ease-in-out infinite' }}>♥</span> by{' '}
                 <a
-                  href="https://github.com/Aelune"
+                  href="https://github.com/Nurysso"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#006989] hover:text-[#007ba3] font-black transition-colors duration-300"
                   style={{ animation: 'glow 3s ease-in-out infinite' }}
                 >
-                  Aelune
+                  Nurysso
                 </a>
               </p>
               <p className="text-sm text-[#eaebed]/40 italic mt-4">

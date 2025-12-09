@@ -13,7 +13,7 @@ const ContactSection = () => {
     {
       id: 'github',
       icon: FaGithub,
-     href: 'https://github.com/Aelune',
+     href: 'https://github.com/Nurysso',
       color: 'from-gray-600 to-gray-800',
       hoverColor: 'from-gray-500 to-gray-700',
       description: 'Github',
@@ -22,7 +22,7 @@ const ContactSection = () => {
     {
       id: 'linkedin',
       icon: FaLinkedin,
-      href: 'https://linkedin.com/in/Aelune',
+      href: 'https://linkedin.com/in/nurysso',
       color: 'from-blue-600 to-blue-800',
       hoverColor: 'from-blue-500 to-blue-700',
       description: 'Linkedin',
@@ -31,7 +31,7 @@ const ContactSection = () => {
     {
       id: 'email',
       icon: MdEmail,
-      href: 'mailto:Ailune@proton.me',
+      href: 'mailto:contact.dawood@proton.me',
       color: 'from-green-600 to-green-800',
       hoverColor: 'from-green-500 to-green-700',
       description: 'Direct Message',
