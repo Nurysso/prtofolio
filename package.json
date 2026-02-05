@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/og": "^0.8.5",
     "@vercel/speed-insights": "^1.3.1",
     "beasties": "^0.3.5",
