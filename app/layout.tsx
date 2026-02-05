@@ -8,6 +8,7 @@ import {
   Gloock
 } from 'next/font/google';
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -333,6 +334,7 @@ export default function RootLayout({
         className={`${roboto.variable} ${inknut.variable} ${jacques.variable} ${hand.variable} ${gloock.variable} antialiased`}
       >
         {children}
+        <SpeedInsights/>
       </body>
     </html>
   );
