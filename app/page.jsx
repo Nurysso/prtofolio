@@ -890,6 +890,7 @@ export default function Portfolio() {
             02 / Selected work
           </p>
         </Reveal>
+
         <Reveal delay={0.05}>
           <h2
             style={{
@@ -901,20 +902,57 @@ export default function Portfolio() {
             Recent projects
           </h2>
         </Reveal>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 24,
-          }}
-        >
+
+        {/* Inject responsive grid styles */}
+        <style>{`
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  `}</style>
+
+        <div className="projects-grid">
           {PROJECTS.slice(0, 6).map((p, i) => (
             <ProjectCard key={p.id} project={p} delay={i * 0.08} onClick={setActiveProject} />
           ))}
         </div>
       </section>
-
       {/*  ABOUT  */}
+      <style>{`
+  .about-grid {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .about-skills {
+    padding-left: 40px;
+  }
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .about-skills {
+      padding-left: 0;
+    }
+  }
+`}</style>
+
       <section
         id="about"
         style={{
@@ -922,69 +960,71 @@ export default function Portfolio() {
           background: 'var(--surface)',
           borderTop: '1px solid var(--border)',
           borderBottom: '1px solid var(--border)',
-          display: 'grid',
-          gridTemplateColumns: '55fr 45fr',
-          gap: 40,
-          alignItems: 'start',
         }}
       >
-        <Reveal>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12,
-                color: 'var(--accent)',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-              }}
-            >
-              03 / About
-            </p>
-            <h2
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(24px,3vw,36px)',
-                fontWeight: 600,
-              }}
-            >
-              A bit about me
-            </h2>
-            <p style={{ fontSize: 14, color: 'var(--text-sec)', lineHeight: 1.8, maxWidth: 480 }}>
-              I'm a recent AIML graduate who fell headfirst into systems engineering — and never
-              looked back. I've built across systems programming, developer tooling, web, and
-              product engineering.
-              <br />
-              <br />
-              I care deeply about correctness, latency, and the craft of writing code that other
-              humans can actually read.
-              <br />
-              <br />
-              Before switching to systems I was lead frontend developer at a previous job, shipping
-              an internal dashboard that handled thousands of daily transactions.
-            </p>
-          </div>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24, paddingLeft: 40 }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12,
-                color: 'var(--accent)',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Tools & Languages
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              {SKILLS.map((s) => (
-                <SkillPill key={s} label={s} />
-              ))}
+        <div className="about-grid">
+          <Reveal>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 12,
+                  color: 'var(--accent)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                03 / About
+              </p>
+              <h2
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 'clamp(24px,3vw,36px)',
+                  fontWeight: 600,
+                }}
+              >
+                A bit about me
+              </h2>
+              <p style={{ fontSize: 14, color: 'var(--text-sec)', lineHeight: 1.8, maxWidth: 480 }}>
+                I'm a recent AIML graduate who fell headfirst into systems engineering — and never
+                looked back. I've built across systems programming, developer tooling, web, and
+                product engineering.
+                <br />
+                <br />
+                I care deeply about correctness, latency, and the craft of writing code that other
+                humans can actually read.
+                <br />
+                <br />
+                Before switching to systems I was lead frontend developer at a previous job,
+                shipping an internal dashboard that handled thousands of daily transactions.
+              </p>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div
+              className="about-skills"
+              style={{ display: 'flex', flexDirection: 'column', gap: 24 }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 12,
+                  color: 'var(--accent)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Tools & Languages
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {SKILLS.map((s) => (
+                  <SkillPill key={s} label={s} />
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/*  CONTACT  */}
