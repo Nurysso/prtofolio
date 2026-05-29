@@ -1,6 +1,6 @@
 'use client';
 
-import { animate, motion, useSpring, useTransform } from 'framer-motion';
+import { animate, AnimatePresence, motion, useSpring, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 /*  DATA */
@@ -110,32 +110,29 @@ function useReveal(threshold = 0.12) {
 }
 
 function AnimatedNumber({ value: int }) {
-  // 1. Create a spring animation for the value
   const spring = useSpring(0, { mass: 0.8, stiffness: 75, damping: 15 });
-
   useEffect(() => {
-    // 2. Animate the spring from 0 to the target value
-    const controls = animate(0, value, {
+    const controls = animate(0, int, {
       duration: 2,
       onUpdate: (latest) => spring.set(latest),
     });
     return () => controls.stop();
-  }, [value, spring]);
-
+  }, [int, spring]);
   // 3. Transform the spring's float value into a readable integer string
   const display = useTransform(spring, (latest) => Math.round(latest).toLocaleString());
-
   return <motion.span>{display}</motion.span>;
 }
 
 function useClones() {
   const [clones, setClones] = useState(null);
+
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/Nurysso/github-stats/master/data/clones_summary.json')
+    fetch('/api/clones')
       .then((r) => r.json())
-      .then((d) => setClones(d?.cumulative_stats?.total_clones ?? null))
-      .catch(() => setClones(null));
+      .then((d) => setClones(d.total))
+      .catch(() => setClones(0));
   }, []);
+
   return clones;
 }
 
@@ -495,6 +492,33 @@ function SkillPill({ label }) {
   );
 }
 
+const words = ['terminal', 'developers', 'power users'];
+
+function TextCycler() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 3000); // Change word every 3 seconds
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={words[index]}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4 }}
+      >
+        {words[index]}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
+
 /*  MAIN APP  */
 export default function Portfolio() {
   const [activePage, setActivePage] = useState(null); // "lab" | "writing"
@@ -712,13 +736,13 @@ export default function Portfolio() {
                   lineHeight: 1.05,
                   padding: '0.08em 0.28em',
                   borderRadius: 'var(--radius)',
-                  animation: 'chipIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s both',
+                  // Keep your animation logic here
                   transform: chipHovered ? 'rotate(-1deg) scale(1.02)' : 'none',
                   transition: 'transform 0.2s',
                   cursor: 'default',
                 }}
               >
-                terminal
+                <TextCycler />
               </span>
             </div>
           </h1>

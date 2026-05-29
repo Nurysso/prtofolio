@@ -1,14 +1,14 @@
-import React from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import {
-  Roboto,
+  Gloock,
   Inknut_Antiqua,
   Jacques_Francois,
   Just_Another_Hand,
-  Gloock,
+  Roboto,
 } from 'next/font/google';
+import React from 'react';
 import './globals.css';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const roboto = Roboto({
   subsets: ['latin'],
