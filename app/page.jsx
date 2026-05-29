@@ -111,14 +111,18 @@ function useReveal(threshold = 0.12) {
 
 function AnimatedNumber({ value: int }) {
   const spring = useSpring(0, { mass: 0.8, stiffness: 75, damping: 15 });
+
   useEffect(() => {
+    // Check that 'int' is a valid number before animating
+    if (typeof int !== 'number') return;
+
     const controls = animate(0, int, {
       duration: 2,
       onUpdate: (latest) => spring.set(latest),
     });
     return () => controls.stop();
-  }, [int, spring]);
-  // 3. Transform the spring's float value into a readable integer string
+  }, [int, spring]); // Dependency on 'int' is correct now
+
   const display = useTransform(spring, (latest) => Math.round(latest).toLocaleString());
   return <motion.span>{display}</motion.span>;
 }
