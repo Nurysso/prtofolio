@@ -771,7 +771,7 @@ export default function Portfolio() {
                 textTransform: 'uppercase',
               }}
             >
-              total clones
+              Total Downloads
             </span>
             <span
               style={{
