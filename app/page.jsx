@@ -1,8 +1,8 @@
 'use client';
 
 import { animate, AnimatePresence, motion, useSpring, useTransform } from 'framer-motion';
+import { Calendar, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-
 /*  DATA */
 const PROJECTS = [
   {
@@ -13,7 +13,8 @@ const PROJECTS = [
     year: '2026',
     status: 'BETA',
     site: false,
-    link: 'https://github.com/Nurysso/eulix',
+//    link: 'https://github.com/Nurysso/eulix',
+  link: 'https://dawood.page/projects/eulix',
     long: 'Offline-first codebase intelligence — indexes your project with AST parsing, stores context in Redis, and answers questions via a local LLM. No data leaves your machine.',
   },
   {
@@ -83,9 +84,130 @@ const PROJECTS = [
   // },
 ];
 
+const experiences = [
+  {
+    role: 'Backend Engineer',
+    company: 'Confidential AI Startup',
+    note: 'NDA',
+    period: 'Feb 2026 – Apr 2026',
+    location: 'Remote',
+    bullets: [
+      'Engineered a high-throughput Rust service backed by a message broker, sustaining ~900 API calls/sec on a single instance under sustained production load.',
+      'Evaluated hardware-aware transformer inference strategies; benchmarked model execution trade-offs across compute profiles to guide deployment decisions.',
+    ],
+    tags: ['Rust', 'Systems', 'Inference', 'Message Broker'],
+  },
+  {
+    role: 'Frontend Engineer',
+    company: 'Xunoia',
+    note: '',
+    period: 'Sep 2024 – Sep 2025',
+    location: 'Hyderabad, India',
+    bullets: [
+      'Built a payment-integrated task manager in TypeScript/React handling 200k+ monthly transactions, delivered on schedule across the full contract term.',
+      'Diagnosed production incidents from unstable third-party APIs; implemented a schema-validation layer that reduced breaking-change crashes by 90%.',
+      'Authored incident reports, root-cause analyses, and architectural decision records that cut onboarding time and prevented recurring failures.',
+    ],
+    tags: ['TypeScript', 'React', 'Payments', 'API Design'],
+  },
+  {
+    role: 'Software Engineer Intern',
+    company: 'Bluestock Fintech',
+    note: '',
+    period: 'Mar 2025 – Jun 2025',
+    location: 'Hyderabad, India',
+    bullets: [
+      'Built and maintained internal dashboard and backend systems in Go, supporting core fintech and stock-data workflows.',
+      'Led a cross-functional team of 15 interns to deliver project milestones on schedule across frontend, backend, and QA workstreams.',
+    ],
+    tags: ['Go', 'Fintech', 'Team Lead', 'Dashboards'],
+  },
+];
+
+const ossContributions = [
+  {
+    org: 'Canonical / Pebble',
+    lang: 'Go',
+    period: 'Feb 2026 – Present',
+    bullets: [
+      "Fixed a misleading error in the pull command when a remote file doesn't exist (PR #754) — traced root cause to unexpected multipart response ordering, refactored processing into a shared processResponsePart() helper.",
+      'Resolved Sphinx redirect warnings across documentation (PR #749), preserving two intentional exceptions with clear justification in the PR description.',
+    ],
+  },
+  {
+    org: 'Gin-Gonic / Gin',
+    lang: 'Go',
+    period: 'Dec 2025 – Present',
+    bullets: [
+      'Co-authored a ClientIP parsing fix for multiple X-Forwarded-For headers (PR #4472) — diagnosed the edge case, reasoned through the HTTP spec, and documented the fix clearly for maintainer review.',
+    ],
+  },
+];
 const SKILLS = ['Rust', 'GoLang', 'TypeScript', 'C', 'CI/CD', 'Linux', 'Redis', 'MariaDB'];
 
 const NAV_LINKS = ['work', 'about', 'contact'];
+
+const SectionBadge = ({ icon: Icon, label, color = 'blue' }) => {
+  const colors = {
+    blue: 'from-blue-500/10 to-cyan-500/10 border-blue-500/20 text-blue-400',
+    purple: 'from-purple-500/10 to-pink-500/10 border-purple-500/20 text-purple-400',
+    green: 'from-emerald-500/10 to-teal-500/10 border-emerald-500/20 text-emerald-400',
+    amber: 'from-amber-500/10 to-orange-500/10 border-amber-500/20 text-amber-400',
+  };
+  return (
+    <div
+      className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${colors[color]} border backdrop-blur-sm mb-6`}
+    >
+      <Icon className="w-4 h-4" />
+      <span className="text-sm font-medium">{label}</span>
+    </div>
+  );
+};
+
+const MISC = [
+  {
+    org: 'Harvard Project for Asian and International Relations',
+    title: 'HPAIR Delegate 2026',
+    desc: 'Selected to participate in high-level workshops on international development, global governance, and conflict management alongside policymakers and academics from across the world. Demonstrated public speaking and cross-cultural collaboration skills.',
+  },
+  {
+    org: `Mentored students to build projects and think before using AI to write code`,
+    title: `Hackprix S2 & S3 Mentor`,
+    desc: `Mentored 20+ teams to build something meaningFull during Hackathon`,
+  },
+];
+
+/* Shared helpers */
+
+const SectionHeader = ({ index, label, title }) => (
+  <>
+    <Reveal>
+      <p
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 12,
+          color: 'var(--accent)',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+        }}
+      >
+        {index} / {label}
+      </p>
+    </Reveal>
+    <Reveal delay={0.05}>
+      <h2
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: 'clamp(22px,3vw,32px)',
+          fontWeight: 600,
+          marginBottom: 32,
+        }}
+      >
+        {title}
+      </h2>
+    </Reveal>
+  </>
+);
 
 /*  HOOKS  */
 function useReveal(threshold = 0.12) {
@@ -150,6 +272,7 @@ function Reveal({ children, delay = 0, style = {} }) {
         opacity: visible ? 1 : 0,
         transform: visible ? 'none' : 'translateY(20px)',
         transition: `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+        height: `100%`,
         ...style,
       }}
     >
@@ -399,6 +522,57 @@ function OverlayPage({ title, label, body, onClose }) {
   );
 }
 
+/*  SKILL PILL */
+function SkillPill({ label }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: 'var(--bg)',
+        border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+        borderRadius: 'var(--radius)',
+        padding: '8px 16px',
+        fontFamily: 'var(--font-mono)',
+        fontSize: 13,
+        color: 'var(--text-pri)',
+        transition: 'border-color 0.2s',
+        cursor: 'default',
+      }}
+    >
+      {label}
+    </div>
+  );
+}
+
+const words = ['terminal', 'developers', 'power users'];
+
+function TextCycler() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 3000); // Change word every 3 seconds
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={words[index]}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4 }}
+      >
+        {words[index]}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
+
 /*  PROJECT CARD */
 function ProjectCard({ project, delay, onClick }) {
   const [hovered, setHovered] = useState(false);
@@ -409,6 +583,7 @@ function ProjectCard({ project, delay, onClick }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
+          height: '100%',
           background: 'var(--surface)',
           border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
           borderRadius: 'var(--radius)',
@@ -471,55 +646,329 @@ function ProjectCard({ project, delay, onClick }) {
     </Reveal>
   );
 }
+const ExperienceCard = ({ exp, index }) => (
+  <div
+    className="group relative pl-6 pb-8 last:pb-0"
+    style={{
+      animationDelay: `${index * 120}ms`,
+      animation: 'fadeInUp 0.6s ease-out forwards',
+      opacity: 0,
+    }}
+  >
+    {/* Timeline dot */}
+    <span className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full bg-blue-500 ring-4 ring-blue-500/20 z-10" />
+    {/* Timeline line */}
+    {index < experiences.length - 1 && (
+      <span className="absolute left-[4.5px] top-4 bottom-0 w-px bg-gradient-to-b from-blue-500/40 to-purple-500/20" />
+    )}
 
-/*  SKILL PILL */
-function SkillPill({ label }) {
+    <div className="bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-5 sm:p-6 group-hover:border-blue-500/30 transition-colors duration-300">
+      {/* Header row */}
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+        <div>
+          <h3 className="text-base sm:text-lg font-semibold text-white">{exp.role}</h3>
+          <p className="text-sm text-blue-400 mt-0.5">
+            {exp.company}
+            {exp.note && (
+              <span className="ml-2 text-xs text-slate-500 font-normal">{exp.note}</span>
+            )}
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+            <Calendar className="w-3 h-3" />
+            {exp.period}
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+            <MapPin className="w-3 h-3" />
+            {exp.location}
+          </span>
+        </div>
+      </div>
+
+      {/* Bullets */}
+      <ul className="space-y-2 mb-4">
+        {exp.bullets.map((b, i) => (
+          <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed">
+            <span className="text-blue-400 mt-1 shrink-0 text-xs">→</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+
+      {/* Tags */}
+      <div className="flex flex-wrap gap-2">
+        {exp.tags.map((t, i) => (
+          <span
+            key={i}
+            className="px-2.5 py-1 text-xs rounded-lg bg-slate-700/50 border border-slate-600/50 text-slate-300"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+function OSSCard({ oss, delay }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          height: '100%',
+          background: 'var(--bg)',
+          border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+          borderRadius: 'var(--radius)',
+          padding: '24px 28px',
+          transition: 'border-color 0.2s',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: 12,
+            marginBottom: 16,
+            flexWrap: 'wrap',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 15,
+              fontWeight: 600,
+              color: 'var(--text-pri)',
+            }}
+          >
+            {oss.org}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 10,
+              color: 'var(--accent)',
+              border: '1px solid var(--accent)',
+              borderRadius: 'var(--radius)',
+              padding: '2px 8px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+            }}
+          >
+            {oss.lang}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              color: 'var(--border)',
+              marginLeft: 'auto',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {oss.period}
+          </span>
+        </div>
+        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {oss.bullets.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                fontSize: 13,
+                color: 'var(--text-sec)',
+                lineHeight: 1.7,
+                display: 'flex',
+                gap: 10,
+              }}
+            >
+              <span style={{ color: 'var(--accent)', flexShrink: 0 }}>—</span>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: b.replace(
+                    /PR #(\d+)/g,
+                    '<span style="font-family:var(--font-mono);font-size:11px;color:var(--accent);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1px 7px">PR #$1</span>'
+                  ),
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Reveal>
+  );
+}
+
+function ExpCard({ exp }) {
   const [hovered, setHovered] = useState(false);
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: 'var(--bg)',
+        flex: 1,
+        background: 'var(--surface)',
         border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+        borderLeft: '2px solid var(--accent)',
         borderRadius: 'var(--radius)',
-        padding: '8px 16px',
-        fontFamily: 'var(--font-mono)',
-        fontSize: 13,
-        color: 'var(--text-pri)',
+        padding: '24px 28px',
         transition: 'border-color 0.2s',
-        cursor: 'default',
       }}
     >
-      {label}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          gap: 16,
+          marginBottom: 16,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 17,
+              fontWeight: 600,
+              color: 'var(--text-pri)',
+            }}
+          >
+            {exp.role}
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 12,
+              color: 'var(--accent)',
+              marginTop: 4,
+            }}
+          >
+            {exp.company}
+            {exp.note && (
+              <span style={{ color: 'var(--text-sec)', fontSize: 10, marginLeft: 8 }}>
+                {exp.note}
+              </span>
+            )}
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-sec)' }}>
+            {exp.period}
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              color: 'var(--border)',
+              marginTop: 3,
+            }}
+          >
+            {exp.location}
+          </div>
+        </div>
+      </div>
+      <ul
+        style={{
+          listStyle: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          marginBottom: 16,
+        }}
+      >
+        {exp.bullets.map((b, i) => (
+          <li
+            key={i}
+            style={{
+              fontSize: 13,
+              color: 'var(--text-sec)',
+              lineHeight: 1.7,
+              display: 'flex',
+              gap: 10,
+            }}
+          >
+            <span style={{ color: 'var(--accent)', flexShrink: 0 }}>—</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        {exp.tags.map((t) => (
+          <span
+            key={t}
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 11,
+              color: 'var(--text-sec)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius)',
+              padding: '3px 10px',
+            }}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
 
-const words = ['terminal', 'developers', 'power users'];
-
-function TextCycler() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 3000); // Change word every 3 seconds
-    return () => clearInterval(timer);
-  }, []);
-
+function MiscCard({ item, delay }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <AnimatePresence mode="wait">
-      <motion.span
-        key={words[index]}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.4 }}
+    <Reveal delay={delay}>
+      <div
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          background: 'var(--surface)',
+          border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+          borderLeft: '2px solid var(--accent)',
+          borderRadius: 'var(--radius)',
+          padding: 'clamp(20px, 3vw, 32px)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+          transition: 'border-color 0.2s',
+          height: '100%',
+        }}
       >
-        {words[index]}
-      </motion.span>
-    </AnimatePresence>
+        <div
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            color: 'var(--accent)',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {item.org}
+        </div>
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 'clamp(15px, 2vw, 18px)',
+            fontWeight: 600,
+            color: 'var(--text-pri)',
+          }}
+        >
+          {item.title}
+        </div>
+        <p
+          style={{
+            fontSize: 13,
+            color: 'var(--text-sec)',
+            lineHeight: 1.8,
+            marginTop: 4,
+            flex: 1,
+          }}
+        >
+          {item.desc}
+        </p>
+      </div>
+    </Reveal>
   );
 }
 
@@ -866,71 +1315,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/*  WORK  */}
-      <section
-        id="work"
-        style={{
-          padding: '80px clamp(40px,8vw,120px)',
-          background: 'var(--bg)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 40,
-        }}
-      >
-        <Reveal>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12,
-              color: 'var(--accent)',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-            }}
-          >
-            02 / Selected work
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.05}>
-          <h2
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(22px,3vw,32px)',
-              fontWeight: 600,
-            }}
-          >
-            Recent projects
-          </h2>
-        </Reveal>
-
-        {/* Inject responsive grid styles */}
-        <style>{`
-    .projects-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    @media (min-width: 640px) {
-      .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (min-width: 1024px) {
-      .projects-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  `}</style>
-
-        <div className="projects-grid">
-          {PROJECTS.slice(0, 6).map((p, i) => (
-            <ProjectCard key={p.id} project={p} delay={i * 0.08} onClick={setActiveProject} />
-          ))}
-        </div>
-      </section>
       {/*  ABOUT  */}
       <style>{`
   .about-grid {
@@ -965,17 +1349,7 @@ export default function Portfolio() {
         <div className="about-grid">
           <Reveal>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <p
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  color: 'var(--accent)',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                03 / About
-              </p>
+              <SectionHeader index="02" label="About Me" title="About Me" />
               <h2
                 style={{
                   fontFamily: 'var(--font-sans)',
@@ -1027,6 +1401,172 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* ── Experience ── */}
+      <section
+        style={{
+          height: `100%`,
+          padding: '80px clamp(40px,8vw,120px)',
+          background: 'var(--bg)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 40,
+        }}
+      >
+        <SectionHeader index="03" label="Experience" title="Work history" />
+
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {experiences.map((exp, i) => (
+            <Reveal key={i} delay={i * 0.08}>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 24,
+                  paddingBottom: i < experiences.length - 1 ? 32 : 0,
+                }}
+              >
+                {/* Spine */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: 16,
+                    flexShrink: 0,
+                    paddingTop: 6,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: 'var(--accent)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  {i < experiences.length - 1 && (
+                    <div
+                      style={{
+                        width: 1,
+                        flex: 1,
+                        marginTop: 6,
+                        background: 'linear-gradient(to bottom, var(--border), transparent)',
+                      }}
+                    />
+                  )}
+                </div>
+                {/* Card */}
+                <ExpCard exp={exp} />
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/*  WORK  */}
+      <section
+        id="work"
+        style={{
+          padding: '80px clamp(40px,8vw,120px)',
+          background: 'var(--bg)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 40,
+        }}
+      >
+        <Reveal>
+          <SectionHeader index="04" label="Projects" title="Recent Projects" />
+        </Reveal>
+
+        {/* Inject responsive grid styles */}
+        <style>{`
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    @media (min-width: 640px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  `}</style>
+
+        {/* ProjectCard grid wrapper */}
+        <div className="projects-grid">
+          {PROJECTS.slice(0, 6).map((p, i) => (
+            <div key={p.id} style={{ display: 'flex' }}>
+              <ProjectCard project={p} delay={i * 0.08} onClick={setActiveProject} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* OSS */}
+      <section
+        style={{
+          padding: '80px clamp(40px,8vw,120px)',
+          background: 'var(--surface)',
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 40,
+        }}
+      >
+        <SectionHeader index="05" label="Open source" title="OSS contributions" />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 20,
+          }}
+        >
+          {ossContributions.map((oss, i) => (
+            <OSSCard key={i} oss={oss} delay={i * 0.08} />
+          ))}
+        </div>
+      </section>
+
+      {/* MISC */}
+      <style>{`
+    .misc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .misc-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .misc-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  `}</style>
+      <section
+        style={{
+          padding: '80px clamp(40px,8vw,120px)',
+          background: 'var(--bg)',
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 40,
+        }}
+      >
+        <SectionHeader index="06" label="Random" title="Random SH3T I DiD" />
+        <div className="misc-grid">
+          {MISC.map((item, i) => (
+            <MiscCard key={i} item={item} delay={i * 0.08} />
+          ))}
+        </div>
+      </section>
+
       {/*  CONTACT  */}
       <section
         id="contact"
@@ -1040,19 +1580,8 @@ export default function Portfolio() {
           textAlign: 'center',
         }}
       >
-        <Reveal>
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12,
-              color: 'var(--accent)',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-            }}
-          >
-            04 / Contact
-          </p>
-        </Reveal>
+        {/* <SectionHeader index="07" label="Experience" title="Contract" /> */}
+
         <Reveal delay={0.05}>
           <h2
             style={{

@@ -25,22 +25,24 @@ const allProjects = [
   {
     id: 1,
     title: 'Vanish',
-    description: 'Modern alternative to rm command with customizable TUI and restore feature. Built with Rust for performance and safety.',
+    description:
+      'Modern alternative to rm command with customizable TUI and restore feature. Built with Rust for performance and safety.',
     tech: ['GoLang', 'TUI'],
     status: 'Live',
     link: '/projects/vanish',
     category: 'System Tools',
-    featured: true
+    featured: true,
   },
   {
     id: 2,
     title: 'Venus',
-    description: 'Browser extension to customize tab UI and manage quicklinks. Enhances browsing experience with personalized interfaces.',
+    description:
+      'Browser extension to customize tab UI and manage quicklinks. Enhances browsing experience with personalized interfaces.',
     tech: ['JavaScript', 'WebExt', 'CSS'],
     status: 'Beta',
     link: 'https://github.com/Nurysso/venus',
     category: 'Web Extensions',
-    featured: true
+    featured: true,
   },
   {
     id: 3,
@@ -50,27 +52,28 @@ const allProjects = [
     status: 'Live',
     link: 'https://github.com/Nurysso/hecate',
     category: 'Desktop Environment',
-    featured: true
+    featured: true,
   },
   {
     id: 4,
     title: 'Tyr',
-    description: 'File Organizer powered by ML and simple algo\'s',
+    description: "File Organizer powered by ML and simple algo's",
     tech: ['Rust', 'CLI', 'ML'],
     status: 'Live',
     link: 'https://github.com/Nurysso/tyr',
     category: 'System Tools',
-    featured: true
+    featured: true,
   },
   {
     id: 5,
     title: 'Athena',
-    description: 'Custom Linux kernel build for fun and learning. Exploring kernel development and system-level programming.',
+    description:
+      'Custom Linux kernel build for fun and learning. Exploring kernel development and system-level programming.',
     tech: ['C', 'Kernel'],
     status: 'Research',
     link: 'https://github.com/Nurysso/athena',
     category: 'System Programming',
-    featured: true
+    featured: true,
   },
   {
     id: 6,
@@ -80,11 +83,18 @@ const allProjects = [
     status: 'Live',
     link: 'https://github.com/Nurysso/eulix',
     category: 'Developer Tools',
-    featured: true
-  }
+    featured: true,
+  },
 ];
 
-const categories = ['All', 'System Tools', 'Developer Tools', 'Web Extensions', 'Desktop Environment', 'System Programming'];
+const categories = [
+  'All',
+  'System Tools',
+  'Developer Tools',
+  'Web Extensions',
+  'Desktop Environment',
+  'System Programming',
+];
 const statuses = ['All', 'Live', 'Beta', 'Research'];
 
 // Animated background with mathematical patterns
@@ -102,7 +112,7 @@ const MathBackground = () => {
     canvas.height = window.innerHeight;
 
     let time = 0;
-    const particles: Array<{x: number; y: number; vx: number; vy: number; life: number}> = [];
+    const particles: Array<{ x: number; y: number; vx: number; vy: number; life: number }> = [];
 
     for (let i = 0; i < 50; i++) {
       particles.push({
@@ -110,7 +120,7 @@ const MathBackground = () => {
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
-        life: Math.random()
+        life: Math.random(),
       });
     }
 
@@ -157,7 +167,7 @@ const MathBackground = () => {
         ctx.fill();
 
         // Connect nearby particles
-        particles.slice(i + 1).forEach(p2 => {
+        particles.slice(i + 1).forEach((p2) => {
           const dx = p2.x - p.x;
           const dy = p2.y - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
@@ -198,7 +208,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     const rect = cardRef.current.getBoundingClientRect();
     setMousePos({
       x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      y: e.clientY - rect.top,
     });
   };
 
@@ -213,7 +223,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     'Developer Tools': '🛠️',
     'Web Extensions': '🌐',
     'Desktop Environment': '🖥️',
-    'System Programming': '⚙️'
+    'System Programming': '⚙️',
   };
 
   return (
@@ -227,14 +237,14 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       style={{
         animationDelay: `${index * 100}ms`,
         animation: 'fadeInUp 0.6s ease-out forwards',
-        opacity: 0
+        opacity: 0,
       }}
     >
       {/* Animated gradient background */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.15), transparent 40%)`
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(59, 130, 246, 0.15), transparent 40%)`,
         }}
       />
 
@@ -275,7 +285,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
         {/* Status Badge */}
         <div className="mb-4">
-          <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r ${statusColors[project.status as keyof typeof statusColors] || statusColors.Live} border backdrop-blur-sm`}>
+          <span
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r ${statusColors[project.status as keyof typeof statusColors] || statusColors.Live} border backdrop-blur-sm`}
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
             {project.status}
           </span>
@@ -310,7 +322,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
 const StatsCard = ({ icon: Icon, label, value, loading, gradient }: any) => {
   return (
-    <div className={`relative group p-6 rounded-2xl bg-gradient-to-br ${gradient} backdrop-blur-xl border border-slate-700/50 overflow-hidden transition-all duration-500 hover:scale-105 hover:border-slate-600`}>
+    <div
+      className={`relative group p-6 rounded-2xl bg-gradient-to-br ${gradient} backdrop-blur-xl border border-slate-700/50 overflow-hidden transition-all duration-500 hover:scale-105 hover:border-slate-600`}
+    >
       {/* Animated background pattern */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         {[...Array(20)].map((_, i) => (
@@ -321,7 +335,7 @@ const StatsCard = ({ icon: Icon, label, value, loading, gradient }: any) => {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animation: `float ${3 + Math.random() * 2}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 2}s`
+              animationDelay: `${Math.random() * 2}s`,
             }}
           />
         ))}
@@ -357,7 +371,7 @@ const ProjectsPage = () => {
     totalClones: 0,
     uniqueClones: 0,
     totalStars: 0,
-    loading: true
+    loading: true,
   });
 
   useEffect(() => {
@@ -377,11 +391,11 @@ const ProjectsPage = () => {
           totalClones: clonesData.cumulative_stats?.total_clones || 0,
           uniqueClones: clonesData.cumulative_stats?.total_unique_clones || 0,
           totalStars: starsData.total_stars || 0,
-          loading: false
+          loading: false,
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
-        setStats(prev => ({ ...prev, loading: false }));
+        setStats((prev) => ({ ...prev, loading: false }));
       }
     };
 
@@ -393,13 +407,14 @@ const ProjectsPage = () => {
     return num.toString();
   };
 
-  const filteredProjects = allProjects.filter(project => {
+  const filteredProjects = allProjects.filter((project) => {
     const matchesCategory = selectedCategory === 'All' || project.category === selectedCategory;
     const matchesStatus = selectedStatus === 'All' || project.status === selectedStatus;
-    const matchesSearch = searchTerm === '' ||
+    const matchesSearch =
+      searchTerm === '' ||
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.tech.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()));
+      project.tech.some((tech) => tech.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return matchesCategory && matchesStatus && matchesSearch;
   });
@@ -423,7 +438,8 @@ const ProjectsPage = () => {
               My Projects
             </h1>
             <p className="font-jacques text-slate-400 text-xl max-w-2xl mx-auto leading-relaxed">
-              Crafted with passion, powered by innovation. A collection of tools that push boundaries.
+              Crafted with passion, powered by innovation. A collection of tools that push
+              boundaries.
             </p>
           </div>
 
@@ -468,7 +484,7 @@ const ProjectsPage = () => {
 
             {/* Category Pills */}
             <div className="flex flex-wrap gap-3">
-              {categories.map(cat => (
+              {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
@@ -485,7 +501,7 @@ const ProjectsPage = () => {
 
             {/* Status Pills */}
             <div className="flex flex-wrap gap-3">
-              {statuses.map(status => (
+              {statuses.map((status) => (
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
@@ -519,13 +535,34 @@ const ProjectsPage = () => {
           {/* Bottom Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Total Projects', value: allProjects.length, color: 'from-blue-500 to-cyan-500' },
-              { label: 'Live', value: allProjects.filter(p => p.status === 'Live').length, color: 'from-emerald-500 to-green-500' },
-              { label: 'Beta', value: allProjects.filter(p => p.status === 'Beta').length, color: 'from-amber-500 to-yellow-500' },
-              { label: 'Research', value: allProjects.filter(p => p.status === 'Research').length, color: 'from-fuchsia-500 to-pink-500' }
+              {
+                label: 'Total Projects',
+                value: allProjects.length,
+                color: 'from-blue-500 to-cyan-500',
+              },
+              {
+                label: 'Live',
+                value: allProjects.filter((p) => p.status === 'Live').length,
+                color: 'from-emerald-500 to-green-500',
+              },
+              {
+                label: 'Beta',
+                value: allProjects.filter((p) => p.status === 'Beta').length,
+                color: 'from-amber-500 to-yellow-500',
+              },
+              {
+                label: 'Research',
+                value: allProjects.filter((p) => p.status === 'Research').length,
+                color: 'from-fuchsia-500 to-pink-500',
+              },
             ].map((stat, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 text-center group hover:border-slate-600 transition-all duration-300">
-                <div className={`text-4xl font-bold mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+              <div
+                key={i}
+                className="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 text-center group hover:border-slate-600 transition-all duration-300"
+              >
+                <div
+                  className={`text-4xl font-bold mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
+                >
                   {stat.value}
                 </div>
                 <div className="text-sm text-slate-400">{stat.label}</div>
@@ -548,7 +585,8 @@ const ProjectsPage = () => {
         }
 
         @keyframes float {
-          0%, 100% {
+          0%,
+          100% {
             transform: translateY(0) translateX(0);
           }
           50% {
@@ -557,7 +595,8 @@ const ProjectsPage = () => {
         }
 
         @keyframes gradient {
-          0%, 100% {
+          0%,
+          100% {
             background-position: 0% 50%;
           }
           50% {
