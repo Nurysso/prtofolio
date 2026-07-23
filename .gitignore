@@ -1,4 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 result.log
 lint-check.sh
 color-pallet.md
@@ -18,6 +17,7 @@ color-pallet.md
 # next.js
 /.next/
 /out/
+.open-next/
 
 # production
 /build
