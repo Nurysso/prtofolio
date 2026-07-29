@@ -13,8 +13,8 @@ const PROJECTS = [
     year: '2026',
     status: 'BETA',
     site: false,
-//    link: 'https://github.com/Nurysso/eulix',
-  link: 'https://dawood.page/projects/eulix',
+    //    link: 'https://github.com/Nurysso/eulix',
+    link: 'https://dawood.page/projects/eulix',
     long: 'Offline-first codebase intelligence — indexes your project with AST parsing, stores context in Redis, and answers questions via a local LLM. No data leaves your machine.',
   },
   {

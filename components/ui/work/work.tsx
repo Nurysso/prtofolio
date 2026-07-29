@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { easeInOut, motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 import MysticalCard from './mysticalCard';
 
 const cards = [
@@ -56,7 +56,7 @@ const cards = [
     color: 'from-indigo-700 via-purple-600 to-pink-500',
     link: 'https://github.com/Nurysso/eulix',
     status: 'Live',
-  }
+  },
 ];
 
 const Work = () => {
@@ -100,10 +100,7 @@ const Work = () => {
   };
 
   return (
-    <div
-      ref={sectionRef}
-      className="relative w-full min-h-screen overflow-hidden py-12 md:py-0"
-    >
+    <div ref={sectionRef} className="relative w-full min-h-screen overflow-hidden py-12 md:py-0">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -116,7 +113,7 @@ const Work = () => {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
         />
         <motion.div
@@ -129,7 +126,7 @@ const Work = () => {
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
             delay: 2,
           }}
         />
@@ -141,7 +138,7 @@ const Work = () => {
               linear-gradient(rgba(59, 130, 246, 0.4) 1px, transparent 1px),
               linear-gradient(90deg, rgba(59, 130, 246, 0.4) 1px, transparent 1px)
             `,
-            backgroundSize: "40px 40px",
+            backgroundSize: '40px 40px',
           }}
         />
       </div>
@@ -151,21 +148,21 @@ const Work = () => {
         className="text-center pt-12 md:pt-20 pb-8 md:pb-12 relative z-10 px-4"
         variants={headerVariants}
         initial="hidden"
-        animate={inView ? "visible" : "hidden"}
+        animate={inView ? 'visible' : 'hidden'}
       >
         <div className="inline-block relative">
           <motion.h2
             className="text-4xl md:text-6xl lg:text-7xl font-hand bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent relative"
             animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
             }}
             transition={{
               duration: 5,
               repeat: Infinity,
-              ease: "linear",
+              ease: 'linear',
             }}
             style={{
-              backgroundSize: "200% 100%",
+              backgroundSize: '200% 100%',
             }}
           >
             FEATURED PROJECTS
@@ -216,7 +213,7 @@ const Work = () => {
             transition={{
               duration: 25,
               repeat: Infinity,
-              ease: "linear",
+              ease: 'linear',
             }}
           >
             {cards.map((card, index) => {
@@ -262,7 +259,7 @@ const Work = () => {
                 transition={{
                   duration: 3,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: 'easeInOut',
                 }}
               />
               <div
@@ -303,7 +300,7 @@ const Work = () => {
               className="h-[280px]"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: 0.1 * index, duration: 0.6 }}
             >
               <MysticalCard project={card} />
