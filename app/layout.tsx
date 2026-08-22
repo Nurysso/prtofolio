@@ -1,5 +1,5 @@
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
+import Link from 'next/link'
 import {
   Gloock,
   Inknut_Antiqua,
@@ -274,6 +274,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <a 
+            rel="me noopener noreferrer" 
+            href="https://mastodon.social/@d4ud" 
+            target="_blank"
+            className="text-gray-700 hover:text-black"
+          >
+            Mastodon
+          </a>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* <link rel="canonical" href="https://dawood.page" /> */}
@@ -282,7 +290,6 @@ export default function RootLayout({
         className={`${roboto.variable} ${inknut.variable} ${jacques.variable} ${hand.variable} ${gloock.variable} antialiased`}
       >
         {children}
-        <SpeedInsights />
       </body>
     </html>
   );
