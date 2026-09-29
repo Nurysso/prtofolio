@@ -2,7 +2,7 @@
   "name": "portfolio",
   "version": "0.1.2",
   "private": true,
-  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912",
+  "packageManager": "pnpm@12.6.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -24,11 +24,12 @@
     "beasties": "0.3.5",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "eslint": "^10.9.1",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
-    "framer-motion": "12.23.26",
+    "framer-motion": "^12.23.26",
     "lucide-react": "0.511.0",
-    "motion": "12.23.26",
+    "motion": "^12.23.26",
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6",
@@ -47,7 +48,6 @@
     "autoprefixer": "10.4.22",
     "baseline-browser-mapping": "2.9.19",
     "esbuild": "^0.28.1",
-    "eslint": "9.39.1",
     "eslint-config-next": "16.2.6",
     "globals": "16.5.0",
     "postcss": "8.5.6",
@@ -57,6 +57,8 @@
   },
   "overrides": {
     "minimatch": ">=9.0.7",
-    "picomatch": ">=4.0.4"
+    "picomatch": ">=4.0.4",
+    "sharp": "0.35.4",
+    "motion-dom": "12.23.26"
   }
 }

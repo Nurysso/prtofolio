@@ -405,7 +405,7 @@ function Hero() {
             className="inline-flex items-center gap-2 font-mono text-[10px] text-amber-200 border border-amber-300/25 bg-amber-300/[0.05] rounded-full px-3.5 py-1.5 mb-8 tracking-widest uppercase"
           >
             <Sparkles size={10} className="text-amber-300" />
-            beta · stable release summer 2026
+            v0.8.0 · pre-1.0, shipping fast
           </motion.div>
 
           {/* Headline */}
@@ -438,8 +438,8 @@ function Hero() {
             className="text-zinc-400 text-[15px] leading-[1.75] mb-9 max-w-[440px]"
           >
             Eulix builds a structured knowledge base from your source code — symbols, call graphs,
-            semantic embeddings — then answers any question about it in under 50ms. Entirely on your
-            machine.
+            semantic embeddings — then answers any question about it in under 500ms, even after a
+            full reload on a 26M-line codebase. Entirely on your machine.
           </motion.p>
 
           <motion.div
@@ -485,8 +485,8 @@ function Hero() {
             className="flex items-center gap-7 mt-10 pt-8 border-t border-white/[0.07]"
           >
             {[
-              { val: '26M', label: 'LOC/min parse', color: 'text-violet-300' },
-              { val: '<50ms', label: 'query latency', color: 'text-cyan-300' },
+              { val: '26M', label: 'LOC repo, <500ms query', color: 'text-violet-300' },
+              { val: '44%', label: 'lower peak memory', color: 'text-cyan-300' },
               { val: '100%', label: 'local, private', color: 'text-emerald-300' },
             ].map((s) => (
               <div key={s.label}>
@@ -577,7 +577,7 @@ const STEPS = [
     color: 'text-violet-300',
     bg: 'bg-violet-400/10',
     border: 'border-violet-400/20',
-    desc: 'Rust parser walks your repo, extracts every symbol, builds call graphs and control-flow. Python embedder generates 768-dim semantic vectors on GPU.',
+    desc: 'Rust parser walks your repo, extracting symbols, call graphs, and control-flow — plus deep per-language signals like generics, trait impls, and goroutines. Python embedder generates 768-dim semantic vectors on GPU.',
     stat: '~5 min on 1M LOC',
   },
   {
@@ -587,8 +587,8 @@ const STEPS = [
     color: 'text-cyan-300',
     bg: 'bg-cyan-400/10',
     border: 'border-cyan-400/20',
-    desc: 'Four-stage pipeline: exact symbol match → BM25 keyword → semantic vector → call-graph expansion. MMR re-ranking for diversity.',
-    stat: '<50ms warm query',
+    desc: 'Four-stage pipeline: exact symbol match → BM25 keyword (with proximity scoring) → semantic vector → call-graph expansion, with subsystem-aware boosting to filter out test and vendor noise. MMR re-ranking for diversity.',
+    stat: '<500ms warm query',
   },
   {
     num: '03',
@@ -921,36 +921,6 @@ function QueryPlayground() {
 // Architecture — animated data flow
 // ──────────────────────────────────────────
 
-const ARCH_NODES = [
-  { id: 'src', label: 'Source Code', sub: 'your repo', color: '#a78bfa', x: 80, y: 50 },
-  {
-    id: 'parser',
-    label: 'eulix_parser',
-    sub: 'Rust · symbols + graphs',
-    color: '#f87171',
-    x: 280,
-    y: 50,
-  },
-  {
-    id: 'embed',
-    label: 'eulix_embed',
-    sub: 'Python · PyTorch · CUDA',
-    color: '#fbbf24',
-    x: 480,
-    y: 50,
-  },
-  {
-    id: 'index',
-    label: 'Knowledge Base',
-    sub: 'vectors + call graph',
-    color: '#34d399',
-    x: 380,
-    y: 200,
-  },
-  { id: 'eulix', label: 'eulix', sub: 'Go · retrieval + LLM', color: '#60a5fa', x: 180, y: 200 },
-  { id: 'llm', label: 'Your LLM', sub: 'any provider', color: '#c084fc', x: 80, y: 350 },
-];
-
 function ArchFlow() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
@@ -978,7 +948,7 @@ function ArchFlow() {
       border: 'border-rose-400/25',
       bg: 'bg-rose-400/[0.05]',
       name: 'eulix_parser',
-      role: 'Static analyzer — symbols, call graphs, control flow, complexity metrics.',
+      role: 'Static analyzer — symbols, call graphs, control flow, plus per-language metadata like generics, trait impls, and ABI.',
       license: 'GPLv3',
     },
     {
@@ -1096,7 +1066,7 @@ function AnimCount({ to, decimals = 0, prefix = '', suffix = '' }) {
 
 const PERF = [
   {
-    val: 26,
+    val: 22,
     suffix: 'M',
     unit: 'LOC/min',
     label: 'Parse throughput',
@@ -1105,19 +1075,20 @@ const PERF = [
     bg: 'from-violet-500/10',
   },
   {
-    val: 50,
+    val: 500,
     prefix: '<',
     unit: 'ms',
     label: 'Warm query',
-    sub: 'mmap + IVF index',
+    sub: 'mmap + IVF, 26M LOC reload',
     color: 'text-cyan-300',
     bg: 'from-cyan-500/10',
   },
   {
-    val: 768,
-    unit: 'dim',
-    label: 'Embedding vector',
-    sub: 'PyTorch · CUDA',
+    val: 44,
+    suffix: '%',
+    unit: 'lower peak RAM',
+    label: 'Memory efficiency',
+    sub: '4.68GB → 2.63GB, 20M LOC repo',
     color: 'text-emerald-300',
     bg: 'from-emerald-500/10',
   },
@@ -1213,14 +1184,14 @@ const FEATURES = [
     color: 'text-amber-300',
     bg: 'bg-amber-400/10',
     title: 'Small model, big results',
-    desc: 'Accurate retrieval means a local 7B model rivals hosted alternatives.',
+    desc: 'Subsystem-aware retrieval and noise filtering keep context tight, so even a local 7B model rivals hosted alternatives.',
   },
   {
     icon: Layers,
     color: 'text-emerald-300',
     bg: 'bg-emerald-400/10',
     title: 'Scales to monorepos',
-    desc: 'Millions of LOC, multi-language, legacy systems — Eulix was built for them.',
+    desc: 'Streaming, mmap-backed loaders keep memory flat past 20M LOC and 300K+ chunks — proven on OpenStack-scale monorepos.',
     wide: true,
   },
 ];
@@ -1442,9 +1413,16 @@ function UseCases() {
 // ──────────────────────────────────────────
 
 const CMDS = {
+  macos: 'Currently no binaries exist but you can compile it manually',
   unix: 'curl -fsSL https://raw.githubusercontent.com/nurysso/eulix/main/install.sh | bash',
   win: 'Invoke-WebRequest -Uri "https://raw.githubusercontent.com/nurysso/eulix/main/install.ps1" -OutFile "$env:TEMP\\install.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\\install.ps1"',
 };
+
+const OS_OPTIONS = [
+  { id: 'macos', label: 'macOS' },
+  { id: 'unix', label: 'Linux' },
+  { id: 'win', label: 'Windows' },
+];
 
 function Install() {
   const ref = useRef(null);
@@ -1477,31 +1455,32 @@ function Install() {
         transition={{ duration: 0.6, delay: 0.1 }}
       >
         <p className="font-mono text-[11.5px] text-zinc-600 mb-5">
-          Requires: Go 1.23+ · Rust stable · Python 3.10–3.11
+          Requires: Go 1.23+ · Rust stable · Python 3.11 · uv · PyTorch/OnnxRuntime
         </p>
 
-        {/* OS toggle */}
+        {/* OS Selector Tabs */}
         <div className="flex gap-1 mb-5 p-1 rounded-lg border border-white/[0.07] bg-white/[0.02] w-fit">
-          {['unix', 'win'].map((o) => (
+          {OS_OPTIONS.map(({ id, label }) => (
             <button
-              key={o}
-              onClick={() => setOs(o)}
+              key={id}
+              onClick={() => setOs(id)}
               className="relative px-4 py-1.5 rounded-md font-mono text-[11px] tracking-wide"
             >
-              {os === o && (
+              {os === id && (
                 <motion.span
                   layoutId="os"
                   className="absolute inset-0 bg-white/[0.08] rounded-md"
                   transition={{ duration: 0.2 }}
                 />
               )}
-              <span className={cn('relative', os === o ? 'text-white' : 'text-zinc-500')}>
-                {o === 'unix' ? 'Linux / macOS' : 'Windows'}
+              <span className={cn('relative', os === id ? 'text-white' : 'text-zinc-500')}>
+                {label}
               </span>
             </button>
           ))}
         </div>
 
+        {/* Command Display Terminal Card */}
         <div className="relative group rounded-2xl border border-violet-500/20 bg-[#0d0e12] p-5 flex items-center gap-4 shadow-[0_0_40px_rgba(124,58,237,0.08)]">
           <Terminal size={14} className="text-violet-400 shrink-0" />
           <code className="font-mono text-[12.5px] text-zinc-200 flex-1 overflow-hidden text-ellipsis whitespace-nowrap">

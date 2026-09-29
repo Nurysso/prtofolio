@@ -810,7 +810,9 @@ function ExpCard({ exp }) {
       style={{
         flex: 1,
         background: 'var(--surface)',
-        border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+        borderTop: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+        borderRight: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+        borderBottom: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
         borderLeft: '2px solid var(--accent)',
         borderRadius: 'var(--radius)',
         padding: '24px 28px',
@@ -924,7 +926,9 @@ function MiscCard({ item, delay }) {
         onMouseLeave={() => setHovered(false)}
         style={{
           background: 'var(--surface)',
-          border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+          borderTop: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+          borderRight: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
+          borderBottom: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
           borderLeft: '2px solid var(--accent)',
           borderRadius: 'var(--radius)',
           padding: 'clamp(20px, 3vw, 32px)',

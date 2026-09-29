@@ -270,18 +270,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="me" href="https://mastodon.social/@d4ud" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <a 
-            rel="me noopener noreferrer" 
-            href="https://mastodon.social/@d4ud" 
-            target="_blank"
-            className="text-gray-700 hover:text-black"
-          >
-            Mastodon
-          </a>
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* <link rel="canonical" href="https://dawood.page" /> */}
