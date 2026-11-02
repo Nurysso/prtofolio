@@ -1,0 +1,89 @@
+---
+import Section from '../Section.astro';
+import { experience } from '../../data/profile.js';
+import { inline } from '../../lib/format.js';
+---
+
+<Section id="experience" index="03" label="Experience" title="Work history">
+  <ol class="jobs">
+    {
+      experience.map((job) => (
+        <li class="job">
+          <div class="when meta">
+            <span>{job.period}</span>
+            <span>{job.location}</span>
+          </div>
+          <div class="what">
+            <h3 class="h3">{job.role}</h3>
+            <p class="company">
+              {job.company}
+              {job.note && <span class="tag">{job.note}</span>}
+            </p>
+            <ul class="bullets">
+              {job.bullets.map((b) => (
+                <li set:html={inline(b)} />
+              ))}
+            </ul>
+            <ul class="tags">
+              {job.tags.map((t) => (
+                <li class="tag">{t}</li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .jobs {
+    list-style: none;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .job {
+    display: grid;
+    gap: var(--s-4);
+    padding-block: var(--s-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+  }
+
+  @media (min-width: 768px) {
+    .job {
+      grid-template-columns: minmax(10rem, 1fr) minmax(0, 3fr);
+      gap: var(--grid-gap);
+    }
+
+    .when {
+      flex-direction: column;
+      padding-top: 0.3em;
+    }
+  }
+
+  .company {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+    color: var(--fg-muted);
+  }
+
+  .company .tag {
+    padding-block: 0;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .bullets {
+    margin-block: var(--s-5);
+  }
+</style>

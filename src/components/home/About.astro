@@ -1,0 +1,60 @@
+---
+import Section from '../Section.astro';
+import { about, skills } from '../../data/profile.js';
+---
+
+<Section id="about" index="02" label="About" title="A bit about me">
+  <div class="about">
+    <div class="bio">
+      {about.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <div>
+      <h3 class="label tools-title">Tools &amp; languages</h3>
+      <ul class="ruled tools">
+        {skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--s-7);
+  }
+
+  @media (min-width: 768px) {
+    .about {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: var(--grid-gap);
+    }
+  }
+
+  .bio {
+    display: grid;
+    gap: var(--s-4);
+    max-width: 60ch;
+    color: var(--fg-muted);
+    font-size: 1.0625rem;
+  }
+
+  .tools-title {
+    margin-bottom: var(--s-4);
+  }
+
+  .tools {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tools li {
+    padding: var(--s-3) var(--s-4);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .tools li:hover {
+    background: var(--bg-raised);
+  }
+</style>

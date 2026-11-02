@@ -1,0 +1,68 @@
+---
+// Spec-sheet section: index label in a left rail (desktop), title + content on the right.
+const { id, index, label, title } = Astro.props;
+const headingId = `${id}-title`;
+---
+
+<section id={id} class="section" aria-labelledby={headingId}>
+  <div class="container grid">
+    <div class="rail">
+      <p class="label"><span class="idx">{index}</span> / {label}</p>
+    </div>
+    <div class="body">
+      <h2 id={headingId} class="h2">{title}</h2>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    border-top: 1px solid var(--line);
+    padding-block: var(--section-y);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--s-5) var(--grid-gap);
+  }
+
+  /* Let wide children (code blocks) scroll instead of stretching the grid */
+  .rail,
+  .body {
+    min-width: 0;
+  }
+
+  .rail .label::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    margin-top: var(--s-3);
+    background: var(--line-strong);
+  }
+
+  .body > h2 {
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .rail {
+      grid-column: 1 / span 3;
+    }
+
+    .rail .label {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--s-5));
+      padding-top: 0.6em;
+    }
+
+    .body {
+      grid-column: 4 / -1;
+    }
+  }
+</style>

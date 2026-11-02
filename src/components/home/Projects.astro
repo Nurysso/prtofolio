@@ -1,0 +1,9 @@
+---
+import Section from '../Section.astro';
+import ProjectGrid from '../ProjectGrid.astro';
+import { projects } from '../../data/projects.js';
+---
+
+<Section id="work" index="04" label="Projects" title="Selected projects">
+  <ProjectGrid projects={projects} />
+</Section>

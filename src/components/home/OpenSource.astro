@@ -1,0 +1,55 @@
+---
+import Section from '../Section.astro';
+import { oss } from '../../data/profile.js';
+import { inline } from '../../lib/format.js';
+---
+
+<Section id="oss" index="05" label="Open source" title="Upstream contributions">
+  <ol class="ruled list">
+    {
+      oss.map((c) => (
+        <li class="item">
+          <div class="head">
+            <h3 class="h3">
+              <a class="link" href={c.repo} target="_blank" rel="noopener noreferrer">
+                {c.org}
+              </a>
+            </h3>
+            <span class="tag">{c.lang}</span>
+            <span class="meta period">{c.period}</span>
+          </div>
+          <ul class="bullets">
+            {c.bullets.map((b) => (
+              <li set:html={inline(b, { repo: c.repo })} />
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .item {
+    padding: clamp(20px, 3vw, 32px);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+
+  .period {
+    flex-basis: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .period {
+      flex-basis: auto;
+      margin-left: auto;
+    }
+  }
+</style>

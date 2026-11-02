@@ -1,0 +1,90 @@
+---
+import { formatDate } from '../lib/format.js';
+
+const { posts } = Astro.props;
+---
+
+<ol class="posts">
+  {
+    posts.map((post) => (
+      <li>
+        <a class="row" href={`/writing/${post.id}/`}>
+          <time class="meta" datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date)}
+          </time>
+          <span class="text">
+            <span class="h3 title">
+              {post.data.title}
+              {post.data.draft && <span class="tag">draft</span>}
+            </span>
+            <span class="desc">{post.data.description}</span>
+          </span>
+          <span class="arrow meta" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .posts {
+    list-style: none;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row {
+    display: grid;
+    gap: var(--s-2) var(--grid-gap);
+    padding: var(--s-5) var(--s-2);
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .row:hover {
+    background: var(--bg-raised);
+  }
+
+  @media (min-width: 768px) {
+    .row {
+      grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+      align-items: baseline;
+    }
+  }
+
+  .text {
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .desc {
+    color: var(--fg-muted);
+    font-size: 0.9375rem;
+  }
+
+  .arrow {
+    display: none;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  @media (min-width: 768px) {
+    .arrow {
+      display: block;
+    }
+  }
+
+  .row:hover .arrow {
+    color: var(--fg);
+    transform: translateX(4px);
+  }
+</style>

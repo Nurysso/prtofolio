@@ -1,0 +1,240 @@
+---
+import { hero } from '../../data/profile.js';
+
+const { downloads } = Astro.props;
+const format = (n) => n.toLocaleString('en-US');
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="top">
+      <p class="label"><span class="idx">01</span> / Hello</p>
+      <p class="meta status"><span aria-hidden="true">●</span> {hero.status}</p>
+    </div>
+
+    <h1 id="hero-title" class="display">
+      I build things <br />for the <span class="chip" aria-hidden="true"
+        ><span data-cycler data-words={JSON.stringify(hero.words)}>{hero.words[0]}</span><span class="cursor"
+        ></span></span
+      >
+      <span class="sr-only">{hero.words.join(', ')}.</span>
+    </h1>
+
+    <div class="intro">
+      <div>
+        <p class="lede">{hero.bio}</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#work">View work <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <dl class="spec">
+        {
+          hero.spec.map(([key, value]) => (
+            <div>
+              <dt class="label">{key}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <dl class="ruled stats">
+      <div class="stat">
+        <dt class="label">Total downloads</dt>
+        <dd class="value" data-downloads data-value={downloads ?? ''}>
+          {downloads != null ? format(downloads) : '—'}
+        </dd>
+        <dd class="meta">across all projects · live</dd>
+      </div>
+      {
+        hero.stats.map((s) => (
+          <div class="stat">
+            <dt class="label">{s.label}</dt>
+            <dd class="value">{s.value}</dd>
+            <dd class="meta">{s.note}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<script>
+  import { getTotalDownloads } from '../../lib/stats.js';
+
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // Hero word: erase and retype like a shell prompt
+  const word = document.querySelector('[data-cycler]');
+  if (word) {
+    const words = JSON.parse(word.dataset.words);
+    let i = 0;
+    (async () => {
+      while (true) {
+        await sleep(2600);
+        const next = words[++i % words.length];
+        if (reduceMotion) {
+          word.textContent = next;
+          continue;
+        }
+        while (word.textContent.length) {
+          word.textContent = word.textContent.slice(0, -1);
+          await sleep(35);
+        }
+        for (let k = 1; k <= next.length; k++) {
+          word.textContent = next.slice(0, k);
+          await sleep(65);
+        }
+      }
+    })();
+  }
+
+  // Downloads: the build-time number renders first, then refresh it with the live count
+  const counter = document.querySelector('[data-downloads]');
+  if (counter) {
+    const format = (n) => n.toLocaleString('en-US');
+    const countTo = (to) => {
+      const from = Number(counter.dataset.value) || 0;
+      if (reduceMotion || from === to) {
+        counter.textContent = format(to);
+        return;
+      }
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / 800, 1);
+        counter.textContent = format(Math.round(from + (to - from) * (1 - (1 - p) ** 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    getTotalDownloads().then((total) => total != null && countTo(total));
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(48px, 9vw, 112px) clamp(56px, 8vw, 104px);
+  }
+
+  /* Engineering-paper grid, fading out from the top right */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 75% 65% at 85% 0%, #000 15%, transparent 70%);
+    opacity: 0.7;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-5);
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .status {
+    color: var(--fg-muted);
+  }
+
+  .status span {
+    color: var(--fg);
+  }
+
+  .display {
+    font-size: clamp(2.75rem, 1.5rem + 5.5vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.12em 0.04em;
+    background: var(--inv-bg);
+    color: var(--inv-fg);
+    white-space: nowrap;
+  }
+
+  .chip .cursor {
+    width: 0.4em;
+    height: 0.72em;
+  }
+
+  .intro {
+    display: grid;
+    gap: var(--s-7);
+    margin-bottom: clamp(48px, 7vw, 80px);
+  }
+
+  .intro .ctas {
+    margin-top: var(--s-6);
+  }
+
+  @media (min-width: 960px) {
+    .intro {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: end;
+      gap: var(--grid-gap);
+    }
+  }
+
+  .spec {
+    border-top: 1px solid var(--line);
+  }
+
+  .spec > div {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: var(--s-4);
+    align-items: baseline;
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .spec dd {
+    font-size: 0.9375rem;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 960px) {
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: clamp(16px, 2.5vw, 28px);
+  }
+
+  .value {
+    order: -1;
+    margin-bottom: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 · Not found" description="This page doesn't exist." noindex>
+  <section class="container nf" aria-labelledby="nf-title">
+    <p class="label">Error</p>
+    <h1 id="nf-title" class="code">404</h1>
+    <pre class="term"><code><span class="prompt">$</span> cd <span data-path>/missing</span>
+cd: <span data-path>/missing</span>: No such file or directory
+<span class="prompt">$</span> <span class="cursor"></span></code></pre>
+    <div class="ctas">
+      <a class="btn btn-primary" href="/">cd ~ <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="btn btn-secondary" href="/#work">ls projects/</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-path]').forEach((el) => (el.textContent = location.pathname));
+</script>
+
+<style>
+  .nf {
+    display: grid;
+    align-content: center;
+    gap: var(--s-5);
+    min-height: calc(100dvh - var(--nav-h) - 120px);
+    padding-block: var(--section-y);
+  }
+
+  .code {
+    font-family: var(--font-mono);
+    font-size: clamp(6rem, 3rem + 16vw, 14rem);
+    font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+  }
+
+  .term {
+    max-width: 100%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    color: var(--fg-muted);
+    font-size: 0.875rem;
+    line-height: 1.8;
+  }
+
+  .prompt {
+    color: var(--fg);
+  }
+
+  .ctas {
+    margin-top: var(--s-3);
+  }
+</style>

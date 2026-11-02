@@ -1,0 +1,86 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site, socials, mastodon } from '../data/site.js';
+import { skills } from '../data/profile.js';
+
+const { title = site.title, description = site.description, current, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  alternateName: site.handle,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Systems & Backend Engineer',
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Lords Institute of Engineering and Technology' },
+  knowsAbout: skills,
+  sameAs: [...socials.map((s) => s.href), mastodon],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="me" href={mastodon} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+
+    <!-- Apply the stored theme before first paint to avoid a flash -->
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav current={current} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Any element with data-copy="text" copies that text on click
+      document.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-copy]');
+        if (!button) return;
+        button.dataset.label ??= button.textContent;
+        try {
+          await navigator.clipboard.writeText(button.dataset.copy);
+          button.textContent = 'copied';
+        } catch {
+          button.textContent = 'failed';
+        }
+        setTimeout(() => (button.textContent = button.dataset.label), 1500);
+      });
+    </script>
+  </body>
+</html>

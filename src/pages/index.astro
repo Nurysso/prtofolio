@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import About from '../components/home/About.astro';
+import Experience from '../components/home/Experience.astro';
+import Projects from '../components/home/Projects.astro';
+import OpenSource from '../components/home/OpenSource.astro';
+import Misc from '../components/home/Misc.astro';
+import WritingPreview from '../components/home/WritingPreview.astro';
+import Contact from '../components/home/Contact.astro';
+import { getTotalDownloads } from '../lib/stats.js';
+import { getPosts } from '../lib/writing.js';
+
+const downloads = await getTotalDownloads();
+const posts = (await getPosts()).slice(0, 3);
+const hasWriting = posts.length > 0;
+---
+
+<BaseLayout>
+  <Hero downloads={downloads} />
+  <About />
+  <Experience />
+  <Projects />
+  <OpenSource />
+  <Misc />
+  {hasWriting && <WritingPreview posts={posts} />}
+  <Contact index={hasWriting ? '08' : '07'} />
+</BaseLayout>
