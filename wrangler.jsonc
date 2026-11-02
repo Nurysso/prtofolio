@@ -1,12 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "prtofolio",
-  "main": ".open-next/worker.js",
   "compatibility_date": "2026-07-23",
-  "compatibility_flags": ["nodejs_compat"],
+  // Static Astro build: Cloudflare serves dist/ directly, no Worker script needed
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS",
+    "directory": "./dist",
+    "not_found_handling": "404-page",
   },
   "observability": {
     "enabled": true,

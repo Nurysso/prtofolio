@@ -1,0 +1,138 @@
+---
+import { site, socials } from '../../data/site.js';
+
+const { index } = Astro.props;
+---
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="box">
+      <p class="label"><span class="idx">{index}</span> / Contact</p>
+
+      <h2 id="contact-title" class="title">Got a hard backend <br />or tooling problem?</h2>
+      <p class="sub">Open to freelance contracts and full-time roles. Email me what you're building.</p>
+
+      <div class="email-row">
+        <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+        <button type="button" class="copy" data-copy={site.email} aria-label="Copy email address">copy</button>
+      </div>
+
+      <ul class="socials">
+        {
+          socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="noopener noreferrer">
+                {s.label} <span aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    border-top: 1px solid var(--line);
+    padding-block: var(--section-y);
+  }
+
+  /* Inverted block: the one place the palette flips */
+  .box {
+    --muted: color-mix(in srgb, var(--inv-fg) 62%, var(--inv-bg));
+    padding: clamp(28px, 6vw, 80px);
+    background: var(--inv-bg);
+    color: var(--inv-fg);
+  }
+
+  .box ::selection {
+    background: var(--inv-fg);
+    color: var(--inv-bg);
+  }
+
+  .box :focus-visible {
+    outline-color: var(--inv-fg);
+  }
+
+  .label,
+  .label .idx {
+    color: var(--muted);
+  }
+
+  .title {
+    margin-top: clamp(24px, 4vw, 40px);
+    font-size: clamp(2rem, 1.2rem + 3.6vw, 4.25rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .sub {
+    margin-top: var(--s-4);
+    color: var(--muted);
+    font-size: 1.0625rem;
+  }
+
+  .email-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-4);
+    margin-top: clamp(32px, 5vw, 56px);
+  }
+
+  .email {
+    font-family: var(--font-mono);
+    font-size: clamp(1.0625rem, 0.8rem + 1.4vw, 1.875rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  .email:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .copy {
+    min-height: 36px;
+    padding-inline: var(--s-3);
+    border: 1px solid var(--inv-fg);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    transition:
+      background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .copy:hover {
+    background: var(--inv-fg);
+    color: var(--inv-bg);
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    margin-top: var(--s-6);
+    padding: var(--s-5) 0 0;
+    border-top: 1px solid color-mix(in srgb, var(--inv-fg) 20%, var(--inv-bg));
+    list-style: none;
+  }
+
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .socials a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

@@ -1,0 +1,150 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { nav } from '../data/site.js';
+
+const { current } = Astro.props;
+---
+
+<header class="nav" data-nav>
+  <div class="container nav-inner">
+    <a href="/" class="brand" aria-label="dawood.page, home">
+      <span class="dim" aria-hidden="true">~/</span>dawood<span class="dim">.page</span>
+    </a>
+
+    <nav aria-label="Primary">
+      <button type="button" class="menu-btn" aria-expanded="false" aria-controls="nav-links">menu</button>
+      <ul id="nav-links" class="links">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={current === item.id ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-nav]');
+  const button = header.querySelector('.menu-btn');
+
+  const setOpen = (open) => {
+    header.toggleAttribute('data-open', open);
+    button.setAttribute('aria-expanded', String(open));
+    button.textContent = open ? 'close' : 'menu';
+  };
+
+  button.addEventListener('click', () => setOpen(!header.hasAttribute('data-open')));
+  header.querySelectorAll('.links a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && header.hasAttribute('data-open')) {
+      setOpen(false);
+      button.focus();
+    }
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+    height: var(--nav-h);
+  }
+
+  .brand {
+    margin-right: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .dim {
+    color: var(--fg-subtle);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--s-5);
+    list-style: none;
+    padding: 0;
+  }
+
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .links a:hover,
+  .links a[aria-current] {
+    color: var(--fg);
+  }
+
+  .links a[aria-current] {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  .menu-btn {
+    display: none;
+    min-height: 44px;
+    padding-inline: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 767px) {
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      padding: var(--s-2) var(--gutter) var(--s-5);
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav[data-open] .links {
+      display: flex;
+    }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      border-bottom: 1px solid var(--line);
+      font-size: 1.125rem;
+      color: var(--fg);
+    }
+  }
+</style>

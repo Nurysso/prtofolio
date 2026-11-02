@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/writing.js';
+
+const posts = await getPosts();
+---
+
+<BaseLayout
+  title="Writing · Dawood Khan (Nurysso)"
+  description="Essays on systems design, low-level performance, and occasionally the absurdities of modern web development."
+  current="writing"
+>
+  <Section id="writing" index="01" label="Writing" title="Long-form thoughts">
+    <p class="intro">
+      Essays on systems design, low-level performance, and occasionally the absurdities of modern web development.
+    </p>
+    {posts.length > 0 ? <PostList posts={posts} /> : <p class="meta empty">Nothing published yet. Check back soon.</p>}
+  </Section>
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 56ch;
+    margin-top: calc(-1 * var(--s-5));
+    margin-bottom: var(--s-7);
+    color: var(--fg-muted);
+  }
+
+  .empty {
+    padding-block: var(--s-6);
+    border-block: 1px solid var(--line);
+  }
+</style>

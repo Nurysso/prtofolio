@@ -1,0 +1,51 @@
+---
+import Section from '../Section.astro';
+import { misc } from '../../data/profile.js';
+---
+
+<Section id="misc" index="06" label="Misc" title="Random SH3T I DiD">
+  <ul class="ruled grid">
+    {
+      misc.map((item) => (
+        <li class="item">
+          <p class="label">{item.org}</p>
+          <h3 class="h3">{item.title}</h3>
+          <p class="desc">{item.desc}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Section>
+
+<style>
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: clamp(20px, 3vw, 32px);
+  }
+
+  .label {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .desc {
+    color: var(--fg-muted);
+    font-size: 0.9375rem;
+  }
+</style>

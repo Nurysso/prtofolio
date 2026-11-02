@@ -1,0 +1,50 @@
+---
+import { site, socials } from '../data/site.js';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="meta">© {year} {site.name} · built with Astro · v{site.version}</p>
+    <ul class="meta links">
+      {
+        socials.map((s) => (
+          <li>
+            <a class="link" href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.label}
+            </a>
+          </li>
+        ))
+      }
+      <li><a class="link" href="#top">top ↑</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: var(--s-6);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    list-style: none;
+    padding: 0;
+  }
+
+  .links a:hover {
+    color: var(--fg);
+  }
+</style>

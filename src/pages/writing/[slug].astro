@@ -1,0 +1,92 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, readingTime } from '../../lib/writing.js';
+import { formatDate } from '../../lib/format.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} · Dawood Khan`} description={post.data.description} current="writing">
+  <article class="container article">
+    <header class="head">
+      <nav class="meta crumbs" aria-label="Breadcrumb">
+        <a class="link" href="/">~</a> / <a class="link" href="/writing/">writing</a> / <span aria-current="page">{post.id}</span>
+      </nav>
+      <p class="meta byline">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingTime(post.body)} min read</span>
+        {post.data.draft && <span class="tag">draft</span>}
+      </p>
+      <h1 class="title">{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+      {
+        post.data.tags.length > 0 && (
+          <ul class="tags">
+            {post.data.tags.map((t) => (
+              <li class="tag">{t}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="end">
+      <a class="btn btn-secondary" href="/writing/"><span aria-hidden="true">←</span> All writing</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    padding-block: clamp(40px, 7vw, 88px) var(--section-y);
+  }
+
+  .head {
+    display: grid;
+    gap: var(--s-4);
+    max-width: 68ch;
+    padding-bottom: var(--s-7);
+    margin-bottom: var(--s-7);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .crumbs {
+    margin-bottom: var(--s-6);
+  }
+
+  .crumbs span {
+    color: var(--fg);
+  }
+
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .title {
+    font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .end {
+    max-width: 68ch;
+    margin-top: var(--s-8);
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--line);
+  }
+</style>

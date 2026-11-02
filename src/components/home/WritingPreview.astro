@@ -1,0 +1,17 @@
+---
+import Section from '../Section.astro';
+import PostList from '../PostList.astro';
+
+const { posts } = Astro.props;
+---
+
+<Section id="writing" index="07" label="Writing" title="Latest writing">
+  <PostList posts={posts} />
+  <a class="btn btn-secondary more" href="/writing/">All writing <span class="arrow" aria-hidden="true">→</span></a>
+</Section>
+
+<style>
+  .more {
+    margin-top: var(--s-6);
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+import { STATUS, pad } from '../lib/format.js';
+
+const { projects } = Astro.props;
+---
+
+<ul class="ruled grid">
+  {
+    projects.map((p, i) => {
+      const status = STATUS[p.status];
+      return (
+        <li>
+          <a class="card" href={`/projects/${p.slug}/`}>
+            <div class="top meta">
+              <span>{pad(i + 1)}</span>
+              <span>
+                <span aria-hidden="true">{status.glyph}</span> {status.label} · {p.year}
+              </span>
+            </div>
+            <h3 class="h3 title">
+              {p.title}
+              <span class="arrow" aria-hidden="true">
+                →
+              </span>
+            </h3>
+            <p class="desc">{p.summary}</p>
+            <ul class="tags">
+              {p.stack.map((t) => (
+                <li class="tag">{t}</li>
+              ))}
+            </ul>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    height: 100%;
+    padding: clamp(20px, 3vw, 32px);
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease);
+  }
+
+  .card:hover {
+    background: var(--bg-raised);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-4);
+  }
+
+  .title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+    letter-spacing: -0.025em;
+  }
+
+  .arrow {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--fg-subtle);
+    transition:
+      transform var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .card:hover .arrow {
+    color: var(--fg);
+    transform: translateX(4px);
+  }
+
+  .desc {
+    flex: 1;
+    color: var(--fg-muted);
+    font-size: 0.9375rem;
+  }
+
+  .tags {
+    margin-top: var(--s-2);
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+const { label, code, prompt = true } = Astro.props;
+---
+
+<figure class="code">
+  <figcaption class="head">
+    <span class="label">{label}</span>
+    <button type="button" class="copy meta" data-copy={code} aria-label={`Copy ${label} command`}>copy</button>
+  </figcaption>
+  <pre><code>{prompt && <span class="prompt" aria-hidden="true">$ </span>}{code}</code></pre>
+</figure>
+
+<style>
+  .code {
+    border: 1px solid var(--line);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 0 var(--s-2) 0 var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .copy {
+    min-height: 40px;
+    padding-inline: var(--s-3);
+    color: var(--fg-muted);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .copy:hover {
+    color: var(--fg);
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: var(--s-4);
+    background: var(--bg-raised);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .prompt {
+    color: var(--fg-subtle);
+    user-select: none;
+  }
+</style>
