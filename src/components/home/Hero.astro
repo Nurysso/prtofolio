@@ -170,6 +170,12 @@ const format = (n) => n.toLocaleString('en-US');
     white-space: nowrap;
   }
 
+  /* A zero-width space keeps the line box at full text height while the word is erased,
+     otherwise the chip shrinks to the cursor's height and the page below jumps. */
+  .chip [data-cycler]::before {
+    content: '\200b';
+  }
+
   .chip .cursor {
     width: 0.4em;
     height: 0.72em;

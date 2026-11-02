@@ -5,40 +5,41 @@
 export const hero = {
   words: ['terminal', 'developers', 'power users'],
   status: 'Open for freelance & full-time',
-  bio: 'Software engineer obsessed with performance, clean APIs, and tools that stay out of your way. I build CLI utilities, browser extensions, custom Linux environments, and AI-powered developer tooling.',
+  bio: 'I build backend systems and developer tools in Rust and Go. My flagship project, Eulix, parses the 37-million-line Linux kernel in 57 seconds and runs entirely on your machine.',
   spec: [
     ['Role', 'Systems & backend engineer'],
-    ['Stack', 'Rust · Go · C · TypeScript'],
-    ['Focus', 'CLIs, Linux, LLM tooling'],
+    ['Stack', 'Rust · Go · TypeScript · Python'],
+    ['Focus', 'Code intelligence, CLIs, MCP/LSP'],
     ['Based', 'Hyderabad, India'],
   ],
   stats: [
-    { value: '~900/s', label: 'API calls', note: 'single Rust instance' },
     { value: '200k+', label: 'Transactions / mo', note: 'payments platform' },
+    { value: '37M', label: 'Lines in 57 s', note: 'Linux kernel · Eulix' },
     { value: '3', label: 'Upstream PRs', note: 'Canonical Pebble · Gin' },
   ],
 };
 
 export const about = [
-  "I'm a recent AIML graduate who fell headfirst into systems engineering — and never looked back. I've built across systems programming, developer tooling, web, and product engineering.",
-  'I care deeply about correctness, latency, and the craft of writing code that other humans can actually read.',
-  'Before switching to systems I was lead frontend developer at a previous job, shipping an internal dashboard that handled thousands of daily transactions.',
+  "I studied AI and ML, then went into systems work. In two years I've shipped a payments product that handles 200k+ transactions a month, built Rust and Go services for a startup's microservice stack, and written a code-intelligence platform of my own.",
+  "Eulix is the project I'm proudest of: a Rust parser and library, a Go CLI, a Python embedding service, MCP and LSP servers, and a browser call-graph explorer. All of it runs locally.",
+  'I also send fixes upstream, to Gin and to Canonical\'s Pebble. I care about correctness, latency, and code the next person can read.',
 ];
 
-export const skills = ['Rust', 'GoLang', 'TypeScript', 'C', 'CI/CD', 'Linux', 'Redis', 'MariaDB'];
+export const skills = ['Rust', 'Go', 'TypeScript', 'Python', 'C', 'Docker', 'CI/CD', 'Linux', 'Redis', 'MariaDB'];
 
 export const experience = [
   {
-    role: 'Backend Engineer',
-    company: 'Confidential AI Startup',
+    role: 'Software Development Engineer (Contract)',
+    company: 'Confidential Startup',
     note: 'NDA',
-    period: 'Feb 2026 – Apr 2026',
+    period: 'Feb 2026 – Present',
     location: 'Remote',
     bullets: [
-      'Engineered a high-throughput Rust service backed by a message broker, sustaining **~900 API calls/sec** on a single instance under sustained production load.',
-      'Evaluated hardware-aware transformer inference strategies; benchmarked model execution trade-offs across compute profiles to guide deployment decisions.',
+      'Architected modular error-handling and utility packages in Rust and Go, standardizing error propagation and logging across distributed internal microservices.',
+      'Audited application security and core architecture; identified, patched, and refactored critical vulnerabilities in authentication and account-management pipelines.',
+      'Led code reviews across internal repositories, catching logic regressions and invalid AI-generated contributions to protect codebase integrity.',
     ],
-    tags: ['Rust', 'Systems', 'Inference', 'Message Broker'],
+    tags: ['Rust', 'Go', 'Microservices', 'Security'],
   },
   {
     role: 'Frontend Engineer',
@@ -46,9 +47,9 @@ export const experience = [
     period: 'Sep 2024 – Sep 2025',
     location: 'Hyderabad, India',
     bullets: [
-      'Built a payment-integrated task manager in TypeScript/React handling **200k+ monthly transactions**, delivered on schedule across the full contract term.',
-      'Diagnosed production incidents from unstable third-party APIs; implemented a schema-validation layer that reduced breaking-change crashes by **90%**.',
-      'Authored incident reports, root-cause analyses, and architectural decision records that cut onboarding time and prevented recurring failures.',
+      'Built a payment-integrated task manager (TypeScript, React, Next.js) handling **200k+ monthly transactions**, owned end-to-end from API design to deployment.',
+      'Shipped runtime schema validation at the API boundary of a frontend and backend built in parallel against shifting requirements, cutting breaking-change crashes by **90%**.',
+      'Authored architectural decision records and onboarding docs, reducing new-engineer ramp time and recurring failures.',
     ],
     tags: ['TypeScript', 'React', 'Payments', 'API Design'],
   },
@@ -70,19 +71,19 @@ export const oss = [
     org: 'Canonical / Pebble',
     repo: 'https://github.com/canonical/pebble',
     lang: 'Go',
-    period: 'Feb 2026 – Present',
+    period: '2025 – 2026',
     bullets: [
-      "Fixed a misleading error in the pull command when a remote file doesn't exist (PR #754) — traced root cause to unexpected multipart response ordering, refactored processing into a shared processResponsePart() helper.",
-      'Resolved Sphinx redirect warnings across documentation (PR #749), preserving two intentional exceptions with clear justification in the PR description.',
+      'Fixed multipart response-stream error handling in the pull command (PR #754), refactoring processing into a shared processResponsePart() helper.',
+      'Resolved documentation-pipeline build failures from Sphinx redirect warnings (PR #749).',
     ],
   },
   {
     org: 'Gin-Gonic / Gin',
     repo: 'https://github.com/gin-gonic/gin',
     lang: 'Go',
-    period: 'Dec 2025 – Present',
+    period: '2025 – 2026',
     bullets: [
-      'Co-authored a ClientIP parsing fix for multiple X-Forwarded-For headers (PR #4472) — diagnosed the edge case, reasoned through the HTTP spec, and documented the fix clearly for maintainer review.',
+      'Patched a ClientIP parsing vulnerability for spoofed X-Forwarded-For headers (PR #4472) and proposed RFC-compliant HTTP QUERY routing.',
     ],
   },
 ];

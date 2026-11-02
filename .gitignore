@@ -42,3 +42,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# astro
+.astro/
+/dist/
+.wrangler/
+
+# tooling
+.eulix/
+eulix.toml
+.euignore
+.superdesign/

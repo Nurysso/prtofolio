@@ -4,7 +4,7 @@ export const site = {
   handle: 'Nurysso',
   title: 'Dawood Khan (Nurysso) · Systems & Backend Engineer',
   description:
-    'Systems and backend engineer building fast, dependable tools in Rust, Go and C. Creator of Eulix, Vanish, Tyr and Hecate; upstream contributor to Canonical Pebble and Gin.',
+    'Software engineer building backend systems and developer tools in Rust and Go. Creator of Eulix, a local-first code-intelligence platform that parses the Linux kernel in under a minute; contributor to Canonical Pebble and Gin.',
   email: 'contact.dawood@proton.me',
   version: '2.0.0',
 };

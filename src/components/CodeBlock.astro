@@ -1,5 +1,5 @@
 ---
-const { label, code } = Astro.props;
+const { label, code, prompt = true } = Astro.props;
 ---
 
 <figure class="code">
@@ -7,7 +7,7 @@ const { label, code } = Astro.props;
     <span class="label">{label}</span>
     <button type="button" class="copy meta" data-copy={code} aria-label={`Copy ${label} command`}>copy</button>
   </figcaption>
-  <pre><code><span class="prompt" aria-hidden="true">$ </span>{code}</code></pre>
+  <pre><code>{prompt && <span class="prompt" aria-hidden="true">$ </span>}{code}</code></pre>
 </figure>
 
 <style>
