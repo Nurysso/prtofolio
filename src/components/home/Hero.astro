@@ -1,60 +1,108 @@
 ---
+import Icon from './Icon.astro';
+import HatTiling from './HatTiling.astro';
 import { hero } from '../../data/profile.js';
+import { socials } from '../../data/site.js';
+import { socialIcon } from '../../lib/icons.js';
 
 const { downloads } = Astro.props;
 const format = (n) => n.toLocaleString('en-US');
+
+// The two places a reviewer is most likely to check first
+const quick = socials.filter((s) => ['GitHub', 'LinkedIn'].includes(s.label));
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="container">
-    <div class="top">
-      <p class="label"><span class="idx">01</span> / Hello</p>
-      <p class="meta status"><span aria-hidden="true">●</span> {hero.status}</p>
+  <div class="stage" aria-hidden="true">
+    <div class="art" data-parallax>
+      <HatTiling name="hat-hero" width={26.3} height={23} offset={[3, -2]} rotate={-14} />
     </div>
+  </div>
 
-    <h1 id="hero-title" class="display">
-      I build things <br />for the <span class="chip" aria-hidden="true"
-        ><span data-cycler data-words={JSON.stringify(hero.words)}>{hero.words[0]}</span><span class="cursor"
-        ></span></span
-      >
-      <span class="sr-only">{hero.words.join(', ')}.</span>
-    </h1>
+  <div class="container">
+    <div class="grid">
+      <div class="copy">
+        <p class="h-status" data-enter style="--i:0">
+          <span class="dot" aria-hidden="true"></span>{hero.status}
+        </p>
 
-    <div class="intro">
-      <div>
-        <p class="lede">{hero.bio}</p>
-        <div class="ctas">
-          <a class="btn btn-primary" href="#work">View work <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-secondary" href="#contact">Get in touch</a>
+        <h1 id="hero-title" class="display" data-enter style="--i:1">
+          <span class="line">I build things</span>
+          <span class="line">for the</span>
+          <span class="line">
+            <span class="word" aria-hidden="true"
+              ><span data-cycler data-words={JSON.stringify(hero.words)}>{hero.words[0]}</span><span class="caret"></span
+              ></span
+            >
+          </span>
+          <span class="sr-only">{hero.words.join(', ')}.</span>
+        </h1>
+
+        <p class="lede" data-enter style="--i:2">{hero.bio}</p>
+
+        <div class="ctas" data-enter style="--i:3">
+          <a class="h-btn h-btn--primary" href="#work">
+            View work <Icon name="arrow-right" size={18} class="icon-next" />
+          </a>
+          <a class="h-btn h-btn--ghost" href="#contact">Get in touch</a>
+          <ul class="quick" aria-label="Elsewhere">
+            {
+              quick.map((s) => (
+                <li>
+                  <a
+                    class="h-icon-btn"
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${s.label} (opens in a new tab)`}
+                  >
+                    <Icon name={socialIcon(s.label)} size={20} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
 
-      <dl class="spec">
-        {
-          hero.spec.map(([key, value]) => (
-            <div>
-              <dt class="label">{key}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))
-        }
-      </dl>
+      <aside class="side" data-enter style="--i:4" aria-label="At a glance">
+        <div class="h-win floaty">
+          <div class="h-win-bar">
+            <span class="h-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>visitor@nurysso: ~</span>
+          </div>
+          <div class="h-win-body">
+            <p aria-hidden="true"><span class="t-p">$</span> <span class="t-cmd">cat</span> <span class="t-arg">about.txt</span></p>
+            <dl class="spec">
+              {
+                hero.spec.map(([key, value]) => (
+                  <div>
+                    <dt>{key}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+            <p aria-hidden="true"><span class="t-p">$</span> <span class="caret caret--sm"></span></p>
+          </div>
+        </div>
+      </aside>
     </div>
 
-    <dl class="ruled stats">
-      <div class="stat">
-        <dt class="label">Total downloads</dt>
+    <dl class="stats">
+      <div class="stat h-card" data-spot data-enter style="--i:5">
+        <dt class="label"><span class="dot" aria-hidden="true"></span>Total downloads</dt>
         <dd class="value" data-downloads data-value={downloads ?? ''}>
           {downloads != null ? format(downloads) : '—'}
         </dd>
-        <dd class="meta">across all projects · live</dd>
+        <dd class="note">across all projects · live</dd>
       </div>
       {
-        hero.stats.map((s) => (
-          <div class="stat">
+        hero.stats.map((s, i) => (
+          <div class="stat h-card" data-spot data-enter style={`--i:${i + 6}`}>
             <dt class="label">{s.label}</dt>
             <dd class="value">{s.value}</dd>
-            <dd class="meta">{s.note}</dd>
+            <dd class="note">{s.note}</dd>
           </div>
         ))
       }
@@ -113,134 +161,259 @@ const format = (n) => n.toLocaleString('en-US');
     };
     getTotalDownloads().then((total) => total != null && countTo(total));
   }
+
+  // The tiling drifts a few pixels against the pointer
+  const art = document.querySelector('[data-parallax]');
+  if (art && !reduceMotion && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let frame = 0;
+    addEventListener(
+      'pointermove',
+      (event) => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          art.style.setProperty('--px', (event.clientX / innerWidth - 0.5).toFixed(3));
+          art.style.setProperty('--py', (event.clientY / innerHeight - 0.5).toFixed(3));
+        });
+      },
+      { passive: true }
+    );
+  }
 </script>
 
 <style>
   .hero {
     position: relative;
     isolation: isolate;
-    overflow: hidden;
-    padding-block: clamp(48px, 9vw, 112px) clamp(56px, 8vw, 104px);
+    padding-block: clamp(36px, 6vw, 88px) clamp(56px, 8vw, 104px);
   }
 
-  /* Engineering-paper grid, fading out from the top right */
-  .hero::before {
-    content: '';
+  /* ─── Artwork ─── */
+  .stage {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 75% 65% at 85% 0%, #000 15%, transparent 70%);
-    opacity: 0.7;
+    overflow: clip;
+    pointer-events: none;
   }
 
-  .top {
-    display: flex;
-    flex-wrap: wrap;
+  .art {
+    position: absolute;
+    top: -2%;
+    right: -8%;
+    width: min(60rem, 72vw);
+    aspect-ratio: 640 / 560;
+    -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+  }
+
+  @media (max-width: 999px) {
+    .art {
+      top: 2%;
+      right: -42%;
+      width: 130vw;
+      opacity: 0.4;
+    }
+  }
+
+  /* ─── Layout ─── */
+  .grid {
+    display: grid;
+    gap: clamp(40px, 6vw, 56px);
     align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3) var(--s-5);
-    margin-bottom: clamp(24px, 4vw, 40px);
   }
 
-  .status {
-    color: var(--fg-muted);
+  @media (min-width: 1000px) {
+    .grid {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    }
   }
 
-  .status span {
-    color: var(--fg);
+  /* The headline is sized from its column (cqi). The widest line, "power users" plus the caret, is about 5.7em,
+     so 16cqi leaves a little air at every width. The svh cap keeps the whole hero above the fold on short screens. */
+  .copy {
+    container-type: inline-size;
+    min-width: 0;
   }
 
   .display {
-    font-size: clamp(2.75rem, 1.5rem + 5.5vw, 6rem);
-    line-height: 0.98;
-    letter-spacing: -0.045em;
-    margin-bottom: clamp(40px, 6vw, 72px);
+    margin-top: 26px;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, min(16cqi, 11.5svh), 6.75rem);
+    font-weight: 700;
+    line-height: 0.96;
+    letter-spacing: -0.028em;
+    word-spacing: 0.05em;
   }
 
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0 0.12em 0.04em;
-    background: var(--inv-bg);
-    color: var(--inv-fg);
+  .line {
+    display: block;
     white-space: nowrap;
   }
 
-  /* A zero-width space keeps the line box at full text height while the word is erased,
-     otherwise the chip shrinks to the cursor's height and the page below jumps. */
-  .chip [data-cycler]::before {
+  .word {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .word [data-cycler] {
+    color: var(--accent-text);
+  }
+
+  /* A zero-width space keeps the line box at full height while the word is erased, so nothing below jumps */
+  .word [data-cycler]::before {
     content: '\200b';
   }
 
-  .chip .cursor {
+  .caret {
+    display: inline-block;
     width: 0.4em;
     height: 0.72em;
+    margin-left: 0.06em;
+    border-radius: 3px;
+    background: var(--accent);
+    animation: h-blink 1.05s steps(1) infinite;
   }
 
-  .intro {
-    display: grid;
-    gap: var(--s-7);
-    margin-bottom: clamp(48px, 7vw, 80px);
+  .caret--sm {
+    width: 0.6em;
+    height: 1.05em;
+    margin: 0;
+    border-radius: 1px;
+    vertical-align: -0.2em;
   }
 
-  .intro .ctas {
-    margin-top: var(--s-6);
+  @keyframes h-blink {
+    50% {
+      opacity: 0;
+    }
   }
 
-  @media (min-width: 960px) {
-    .intro {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      align-items: end;
-      gap: var(--grid-gap);
+  .lede {
+    max-width: 33rem;
+    margin-top: 26px;
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem);
+    line-height: 1.6;
+    color: var(--fg-muted);
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 34px;
+  }
+
+  .quick {
+    display: flex;
+    gap: 10px;
+    margin-left: 4px;
+    list-style: none;
+    padding: 0;
+  }
+
+  /* ─── At-a-glance window ─── */
+  .side {
+    min-width: 0;
+  }
+
+  @media (min-width: 1000px) {
+    .side {
+      justify-self: end;
+      width: min(100%, 27rem);
     }
   }
 
   .spec {
-    border-top: 1px solid var(--line);
+    display: grid;
+    margin-block: 10px;
   }
 
   .spec > div {
     display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1fr);
-    gap: var(--s-4);
-    align-items: baseline;
-    padding-block: var(--s-3);
-    border-bottom: 1px solid var(--line);
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    gap: 12px;
+    padding-block: 5px;
+  }
+
+  .spec dt {
+    color: var(--accent-text);
+    text-transform: lowercase;
   }
 
   .spec dd {
-    font-size: 0.9375rem;
+    color: var(--fg);
   }
 
+  /* ─── Stats ─── */
   .stats {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: clamp(48px, 7vw, 88px);
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 900px) {
     .stats {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
     }
   }
 
   .stat {
     display: flex;
     flex-direction: column;
-    gap: var(--s-2);
-    padding: clamp(16px, 2.5vw, 28px);
+    gap: 8px;
+    padding: clamp(18px, 2.4vw, 28px);
+  }
+
+  .stat .label {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
   }
 
   .value {
     order: -1;
-    margin-bottom: var(--s-2);
-    font-family: var(--font-mono);
-    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);
-    font-weight: 500;
+    margin-bottom: 10px;
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.75rem);
+    font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.035em;
     font-variant-numeric: tabular-nums;
+    color: var(--fg);
+  }
+
+  .note {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--fg-subtle);
+  }
+
+  /* ─── Motion: everything rises in on load (CSS only, so the headline never waits on a script) ─── */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-enter] {
+      animation: rise 0.9s var(--ease-out) both;
+      animation-delay: calc(var(--i, 0) * 90ms + 80ms);
+    }
+
+    .floaty {
+      animation: float 9s ease-in-out infinite;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  @keyframes float {
+    50% {
+      transform: translateY(-7px);
+    }
   }
 </style>

@@ -1,24 +1,38 @@
 ---
-import Section from '../Section.astro';
+import HomeSection from './HomeSection.astro';
+import Icon from './Icon.astro';
 import { oss } from '../../data/profile.js';
 import { inline } from '../../lib/format.js';
+
+const hues = ['aqua', 'ember', 'violet'];
 ---
 
-<Section id="oss" index="05" label="Open source" title="Upstream contributions">
-  <ol class="ruled list">
+<HomeSection id="oss" path="open-source">
+  <Fragment slot="title">Upstream <span class="hl">contributions</span></Fragment>
+
+  <ol class="list">
     {
-      oss.map((c) => (
-        <li class="item">
-          <div class="head">
-            <h3 class="h3">
-              <a class="link" href={c.repo} target="_blank" rel="noopener noreferrer">
-                {c.org}
-              </a>
-            </h3>
-            <span class="tag">{c.lang}</span>
-            <span class="meta period">{c.period}</span>
-          </div>
-          <ul class="bullets">
+      oss.map((c, i) => (
+        <li class="item h-card" data-spot data-reveal style={`--hue: var(--hue-${hues[i % hues.length]}); --i:${i}`}>
+          <header class="head">
+            <span class="tile">
+              <Icon name="git-pull-request" size={22} />
+            </span>
+            <div class="who">
+              <h3 class="org">
+                <a class="stretch" href={c.repo} target="_blank" rel="noopener noreferrer">
+                  {c.org}
+                </a>
+              </h3>
+              <p class="meta">
+                <span class="h-tag">{c.lang}</span>
+                <span>{c.period}</span>
+              </p>
+            </div>
+            <span class="go"><Icon name="arrow-up-right" size={20} /></span>
+          </header>
+
+          <ul class="h-points">
             {c.bullets.map((b) => (
               <li set:html={inline(b, { repo: c.repo })} />
             ))}
@@ -27,29 +41,89 @@ import { inline } from '../../lib/format.js';
       ))
     }
   </ol>
-</Section>
+</HomeSection>
 
 <style>
+  .list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(14px, 1.8vw, 20px);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 860px) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   .item {
-    padding: clamp(20px, 3vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: clamp(22px, 3vw, 36px);
   }
 
   .head {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: var(--s-2) var(--s-3);
-    margin-bottom: var(--s-5);
+    gap: 16px;
   }
 
-  .period {
-    flex-basis: 100%;
+  .tile {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid color-mix(in srgb, var(--hue) 32%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--hue) 14%, transparent);
+    color: color-mix(in srgb, var(--hue) 75%, var(--fg));
   }
 
-  @media (min-width: 640px) {
-    .period {
-      flex-basis: auto;
-      margin-left: auto;
-    }
+  .who {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .org {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--fg-subtle);
+  }
+
+  .go {
+    display: inline-flex;
+    margin-left: auto;
+    color: var(--fg-subtle);
+    transition:
+      transform 0.3s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  .item:is(:hover, :focus-within) .go {
+    color: var(--accent-text);
+    transform: translate(3px, -3px);
+  }
+
+  /* Bullet text is injected as HTML, so its PR links sit outside this component's scope.
+     They are lifted above the card-wide link so they stay clickable. */
+  .item :global(.pr) {
+    position: relative;
+    z-index: 3;
   }
 </style>

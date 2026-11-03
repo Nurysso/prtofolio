@@ -23,3 +23,13 @@ export const STATUS = {
 export const pad = (n) => String(n).padStart(2, '0');
 
 export const formatDate = (date) => date.toISOString().slice(0, 10);
+
+// Stable 7-character stand-in for a git commit hash (FNV-1a), used purely as decoration
+export function shortHash(text) {
+  let h = 0x811c9dc5;
+  for (const ch of String(text)) {
+    h ^= ch.codePointAt(0);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0').slice(0, 7);
+}

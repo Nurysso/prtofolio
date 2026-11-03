@@ -1,17 +1,95 @@
 ---
-import Section from '../Section.astro';
-import PostList from '../PostList.astro';
+import HomeSection from './HomeSection.astro';
+import Icon from './Icon.astro';
+import { formatDate } from '../../lib/format.js';
+import { readingTime } from '../../lib/writing.js';
 
 const { posts } = Astro.props;
 ---
 
-<Section id="writing" index="07" label="Writing" title="Latest writing">
-  <PostList posts={posts} />
-  <a class="btn btn-secondary more" href="/writing/">All writing <span class="arrow" aria-hidden="true">→</span></a>
-</Section>
+<HomeSection id="writing" path="writing">
+  <Fragment slot="title">Latest <span class="hl">writing</span></Fragment>
+
+  <ol class="posts">
+    {
+      posts.map((post, i) => (
+        <li class="post h-card" data-spot data-reveal style={`--i:${i}`}>
+          <p class="meta">
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            <span aria-hidden="true">·</span>
+            <span>{readingTime(post.body)} min read</span>
+            {post.data.draft && <span class="h-tag">draft</span>}
+          </p>
+          <h3 class="title">
+            <a class="stretch" href={`/writing/${post.id}/`}>
+              {post.data.title}
+            </a>
+          </h3>
+          <p class="desc">{post.data.description}</p>
+          {
+            post.data.tags.length > 0 && (
+              <ul class="h-tags">
+                {post.data.tags.map((t) => (
+                  <li class="h-tag">{t}</li>
+                ))}
+              </ul>
+            )
+          }
+        </li>
+      ))
+    }
+  </ol>
+
+  <a class="h-btn h-btn--ghost more" href="/writing/">All writing <Icon name="arrow-right" size={18} class="icon-next" /></a>
+</HomeSection>
 
 <style>
+  .posts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(14px, 1.8vw, 20px);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 900px) {
+    .posts {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+
+  .post {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: clamp(20px, 2.8vw, 32px);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--fg-subtle);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1.1rem + 0.9vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .desc {
+    color: var(--fg-muted);
+    font-size: 0.9688rem;
+  }
+
   .more {
-    margin-top: var(--s-6);
+    margin-top: clamp(24px, 3vw, 36px);
   }
 </style>

@@ -20,18 +20,34 @@ export const hero = {
 };
 
 export const about = [
-  "I studied AI and ML, then went into systems work. In two years I've shipped a payments product that handles 200k+ transactions a month, built Rust and Go services for a startup's microservice stack, and written a code-intelligence platform of my own.",
-  "Eulix is the project I'm proudest of: a Rust parser and library, a Go CLI, a Python embedding service, MCP and LSP servers, and a browser call-graph explorer. All of it runs locally.",
-  'I also send fixes upstream, to Gin and to Canonical\'s Pebble. I care about correctness, latency, and code the next person can read.',
+  'I studied AI and ML, then moved into systems work. I like maths, and I like knowing what is underneath: how the kernel schedules a thread, what a function call looks like by the time it reaches the CPU. That habit is most of what makes me a good programmer.',
+  'Away from the keyboard I cook and bake, eat too much chocolate and pizza, and will defend The Lord of the Rings, Star Wars and One Piece as literature.',
+  'If you hire me, I will cook something wonderful. I will also try not to burn the database down.',
 ];
 
-export const skills = ['Rust', 'Go', 'TypeScript', 'Python', 'C', 'Docker', 'CI/CD', 'Linux', 'Redis', 'MariaDB'];
+// Short, checkable habits. Each one is backed by something in the work history below.
+export const workingWithMe = [
+  'I read the diff before the description.',
+  'I write the decision down, so the next engineer does not have to guess.',
+  'I think before I let a model write the code, and I check what it wrote.',
+  'If I think the plan is wrong, I will say so early.',
+];
+
+export const skillTiers = [
+  { label: 'Daily', items: ['Rust', 'Go', 'Linux'] },
+  { label: 'Comfortable', items: ['TypeScript', 'Python', 'Docker', 'CI/CD', 'Redis', 'MariaDB'] },
+  { label: 'Can read', items: ['C'] },
+];
+
+// Flat list for structured data (schema.org knowsAbout)
+export const skills = skillTiers.flatMap((tier) => tier.items);
 
 export const experience = [
   {
     role: 'Software Development Engineer (Contract)',
     company: 'Confidential Startup',
     note: 'NDA',
+    redact: true,
     period: 'Feb 2026 – Present',
     location: 'Remote',
     bullets: [
@@ -39,6 +55,7 @@ export const experience = [
       'Audited application security and core architecture; identified, patched, and refactored critical vulnerabilities in authentication and account-management pipelines.',
       'Led code reviews across internal repositories, catching logic regressions and invalid AI-generated contributions to protect codebase integrity.',
     ],
+    lesson: 'If every service fails in the same shape, incidents get easier to read.',
     tags: ['Rust', 'Go', 'Microservices', 'Security'],
   },
   {
@@ -51,6 +68,7 @@ export const experience = [
       'Shipped runtime schema validation at the API boundary of a frontend and backend built in parallel against shifting requirements, cutting breaking-change crashes by **90%**.',
       'Authored architectural decision records and onboarding docs, reducing new-engineer ramp time and recurring failures.',
     ],
+    lesson: 'When requirements keep moving, check the data at the boundary instead of trusting the types.',
     tags: ['TypeScript', 'React', 'Payments', 'API Design'],
   },
   {
@@ -62,6 +80,7 @@ export const experience = [
       'Built and maintained internal dashboard and backend systems in Go, supporting core fintech and stock-data workflows.',
       'Led a cross-functional team of **15 interns** to deliver project milestones on schedule across frontend, backend, and QA workstreams.',
     ],
+    lesson: "With 15 people on one deadline, the job is making each person's next step obvious.",
     tags: ['Go', 'Fintech', 'Team Lead', 'Dashboards'],
   },
 ];
@@ -95,8 +114,17 @@ export const misc = [
     desc: 'Selected to participate in high-level workshops on international development, global governance, and conflict management alongside policymakers and academics from across the world. Demonstrated public speaking and cross-cultural collaboration skills.',
   },
   {
-    org: 'Mentored students to build projects and think before using AI to write code',
+    org: 'Hackathon mentoring',
     title: 'Hackprix S2 & S3 Mentor',
-    desc: 'Mentored 20+ teams to build something meaningful during Hackathon',
+    desc: 'Mentored 20+ teams to build something meaningful, and to think before using AI to write their code.',
+  },
+  {
+    org: 'Inter-college competition',
+    title: 'Won the drawing competition',
+    desc: 'Won by recreating "Ruin" by jonoDry.',
+  },
+  {
+    org: 'State-level competition',
+    title: 'Won the baking competition',
   },
 ];

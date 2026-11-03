@@ -1,0 +1,100 @@
+---
+// Decorative aperiodic tiling: a window cut from a patch of "hat" tiles (lib/hats.js). One shape covers the
+// plane without ever repeating, so each window shows an arrangement that appears nowhere else in the patch.
+//
+// Drawn at build time as one shared outline plus a <use> per hat, so the page ships no tiling code.
+// Each hat carries its cluster in a class (k-h1 is the single mirrored hat in every H cluster), which the
+// styles below use to tint a few tiles.
+import { hatWindow, HAT_OUTLINE } from '../../lib/hats.js';
+
+// width / height: the window, in patch units (a hat is about 2.8 wide). offset: which part of the patch it
+// shows. rotate: degrees. name: a unique id for this SVG's shared outline.
+const { name, width, height, offset = [0, 0], rotate = 0, rounds = 4, class: className } = Astro.props;
+
+const hats = hatWindow({ rounds, width, height, offset, rotate });
+
+const n = (v) => Number(v.toFixed(3));
+const outline = HAT_OUTLINE.map(([x, y]) => `${n(x)},${n(y)}`).join(' ');
+// Our matrices are [a b c d e f] as x' = a·x + b·y + c; SVG wants matrix(a d b e c f)
+const matrix = (m) => `matrix(${[m[0], m[3], m[1], m[4], m[2], m[5]].map(n).join(' ')})`;
+// How far from the middle, so tiles can appear in a ripple that spreads outwards
+const rank = (h) => Math.round(Math.hypot(h.x, h.y) / 1.8);
+// Only these clusters are styled, so the other hats carry no class
+const STYLED = new Set(['H', 'H1']);
+const kindClass = (kind) => (STYLED.has(kind) ? `k-${kind.toLowerCase()}` : undefined);
+---
+
+<svg
+  class:list={['ht', className]}
+  viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs><polygon id={name} points={outline} /></defs>
+  <g class="plane">
+    {hats.map((h) => <use href={`#${name}`} class={kindClass(h.kind)} transform={matrix(h.m)} style={`--d:${rank(h)}`} />)}
+  </g>
+</svg>
+
+<style>
+  .ht {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The pointer drifts the whole tiling a few pixels (the hero sets --px and --py). One unit here is
+     about 35 screen pixels, so these are small numbers. */
+  .plane {
+    transform: translate(calc(var(--px, 0) * -0.5px), calc(var(--py, 0) * -0.5px));
+    transition: transform 0.9s var(--ease-out, ease-out);
+  }
+
+  use {
+    fill: none;
+    stroke: var(--cn-line);
+    stroke-width: 0.045;
+    stroke-linejoin: round;
+  }
+
+  .k-h {
+    fill: var(--accent);
+    fill-opacity: 0.05;
+  }
+
+  .k-h1 {
+    fill: var(--accent);
+    fill-opacity: 0.16;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    use {
+      animation: ht-in 0.9s var(--ease-out, ease-out) both;
+      animation-delay: calc(var(--d, 0) * 45ms + 120ms);
+    }
+
+    /* The mirrored hats breathe, each out of step with the next */
+    .k-h1 {
+      animation:
+        ht-in 0.9s var(--ease-out, ease-out) both,
+        ht-breathe 9s ease-in-out infinite;
+      animation-delay: calc(var(--d, 0) * 45ms + 120ms), calc(var(--d, 0) * -900ms);
+    }
+  }
+
+  @keyframes ht-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes ht-breathe {
+    0%,
+    100% {
+      fill-opacity: 0.1;
+    }
+    50% {
+      fill-opacity: 0.24;
+    }
+  }
+</style>

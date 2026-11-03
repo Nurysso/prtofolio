@@ -23,7 +23,23 @@ const { projects } = Astro.props;
                 →
               </span>
             </h3>
+            {p.stats && (
+              <dl class="stats">
+                {p.stats.slice(0, 3).map((s) => (
+                  <div>
+                    <dt class="meta">{s.label}</dt>
+                    <dd class="value">{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
             <p class="desc">{p.summary}</p>
+            {p.limits && (
+              <p class="edge">
+                <span class="label">Rough edge</span>
+                {p.limits[0]}
+              </p>
+            )}
             <ul class="tags">
               {p.stack.map((t) => (
                 <li class="tag">{t}</li>
@@ -95,10 +111,43 @@ const { projects } = Astro.props;
     transform: translateX(4px);
   }
 
+  /* Numbers first: the proof comes before the pitch */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: var(--s-4);
+    padding-block: var(--s-3);
+    border-block: 1px solid var(--line);
+  }
+
+  .stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .value {
+    order: -1;
+    font-family: var(--font-mono);
+    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
   .desc {
     flex: 1;
     color: var(--fg-muted);
     font-size: 0.9375rem;
+  }
+
+  .edge {
+    display: grid;
+    gap: var(--s-1);
+    color: var(--fg-muted);
+    font-size: 0.875rem;
   }
 
   .tags {

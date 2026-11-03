@@ -30,6 +30,7 @@ const blocks = [
   p.usage && { kind: 'usage', id: 'usage', label: 'Usage', title: p.usage.title },
   ...(p.sections ?? []).map((s, i) => ({ kind: 'items', id: `section-${i + 1}`, ...s })),
   p.install && { kind: 'install', id: 'install', label: 'Install', title: 'Get it running' },
+  p.limits && { kind: 'limits', id: 'limits', label: 'Limits', title: 'Rough edges' },
   p.faq && { kind: 'faq', id: 'faq', label: 'FAQ', title: 'Before you try it' },
 ].filter(Boolean);
 ---
@@ -127,6 +128,13 @@ const blocks = [
             ))}
             {p.installNote && <p class="meta">{p.installNote}</p>}
           </div>
+        )}
+        {block.kind === 'limits' && (
+          <ul class="bullets limits">
+            {p.limits.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
         )}
         {block.kind === 'items' && (
           <ul class="ruled items">
@@ -287,6 +295,11 @@ const blocks = [
   .install {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-4);
+  }
+
+  .limits {
+    max-width: 62ch;
     gap: var(--s-4);
   }
 

@@ -1,9 +1,421 @@
 ---
-import Section from '../Section.astro';
-import ProjectGrid from '../ProjectGrid.astro';
+import HomeSection from './HomeSection.astro';
+import Icon from './Icon.astro';
+import Constellation from './Constellation.astro';
 import { projects } from '../../data/projects.js';
+import { STATUS } from '../../lib/format.js';
+import { highlight } from '../../lib/snippet.js';
+
+// Icon and tint hue per project. An unknown slug falls back to a default, so adding a project never breaks the page.
+const looks = {
+  eulix: { icon: 'search-code', hue: 'ember' },
+  tyr: { icon: 'folder', hue: 'amber' },
+  vanish: { icon: 'trash', hue: 'aqua' },
+  hecate: { icon: 'moon', hue: 'rose' },
+  binrex: { icon: 'grid', hue: 'mint' },
+  libeulix: { icon: 'cpu', hue: 'violet' },
+  'eulix-lsp': { icon: 'code', hue: 'aqua' },
+  terence: { icon: 'pi', hue: 'ember' },
+};
+const look = (slug) => looks[slug] ?? { icon: 'terminal', hue: 'ember' };
+
+// The first project is the flagship. The rest are laid out in rows: ROWS gives the number of cards in each row in
+// turn (the two Eulix components first, then three, then two). Any projects past that fall into rows of three,
+// and every row stretches to the full width, so a short last row never leaves a gap.
+const ROWS = [2, 3, 2];
+const [flagship, ...rest] = projects;
+const spans = [];
+for (let at = 0, row = 0; at < rest.length; row++) {
+  const size = Math.min(ROWS[row] ?? 3, rest.length - at);
+  for (let i = 0; i < size; i++) spans.push(12 / size);
+  at += size;
+}
+
+// The flagship's terminal replays its documented usage: every step, with a blank line between steps
+const lines = flagship.usage?.steps.flatMap((step, i) => [...(i ? [''] : []), ...step.code.split('\n')]) ?? [];
+const flagStatus = STATUS[flagship.status];
 ---
 
-<Section id="work" index="04" label="Projects" title="Selected projects">
-  <ProjectGrid projects={projects} />
-</Section>
+<HomeSection id="work" path="projects">
+  <Fragment slot="title">Selected <span class="hl">projects</span></Fragment>
+
+  <article class="feature h-card" data-spot data-reveal style={`--hue: var(--hue-${look(flagship.slug).hue})`}>
+    {
+      lines.length > 0 && (
+        <div class="art" aria-hidden="true">
+          <Constellation seed={7} count={30} width={600} height={680} />
+        </div>
+      )
+    }
+    <div class="main">
+      <header class="head">
+        <span class="tile"><Icon name={look(flagship.slug).icon} size={22} /></span>
+        <span class="status"><span class="dot" data-status={flagship.status} aria-hidden="true"></span>{flagStatus.label} · {flagship.year}</span>
+        <span class="h-tag">Flagship</span>
+      </header>
+
+      <h3 class="feature-title"><a class="stretch" href={`/projects/${flagship.slug}/`}>{flagship.title}</a></h3>
+      <p class="summary lead">{flagship.summary}</p>
+
+      {
+        flagship.stats && (
+          <dl class="tiles">
+            {flagship.stats.map((s) => (
+              <div>
+                <dt>{s.label}</dt>
+                <dd class="num-big">{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {
+        flagship.limits && (
+          <p class="edge">
+            <span class="label">Rough edge</span>
+            {flagship.limits[0]}
+          </p>
+        )
+      }
+
+      <ul class="h-tags">
+        {flagship.stack.map((t) => <li class="h-tag">{t}</li>)}
+      </ul>
+
+      <p class="more">View project <span class="nudge"><Icon name="arrow-right" size={18} /></span></p>
+    </div>
+
+    {
+      lines.length > 0 && (
+        <div class="h-win demo" aria-hidden="true">
+          <div class="h-win-bar">
+            <span class="h-dots"><i /><i /><i /></span>
+            <span>~/your-project</span>
+          </div>
+          <pre class="h-win-body code"><code>{lines.map((line) => line === '' ? <span class="tl gap" /> : <span class="tl"><span class="t-p">$ </span>{highlight(line).map((part) => <span class={`t-${part.kind}`}>{part.text}</span>)}</span>)}</code></pre>
+        </div>
+      )
+    }
+  </article>
+
+  <ul class="bento">
+    {
+      rest.map((p, i) => {
+        const status = STATUS[p.status];
+        const { icon, hue } = look(p.slug);
+        return (
+          <li class="cell" style={`--span:${spans[i]}`}>
+            <article class="card h-card" data-spot data-reveal style={`--hue: var(--hue-${hue}); --i:${i % 3}`}>
+              <header class="head">
+                <span class="tile"><Icon name={icon} size={22} /></span>
+                <span class="status"><span class="dot" data-status={p.status} aria-hidden="true"></span>{status.label} · {p.year}</span>
+                {p.part && <span class="h-tag part">Part of {p.part}</span>}
+                <span class="go"><Icon name="arrow-up-right" size={20} /></span>
+              </header>
+
+              <h3 class="title"><a class="stretch" href={`/projects/${p.slug}/`}>{p.title}</a></h3>
+              <p class="summary">{p.summary}</p>
+
+              {
+                p.stats && (
+                  <ul class="facts">
+                    {p.stats.slice(0, 3).map((s) => (
+                      <li><b>{s.value}</b> {s.label}</li>
+                    ))}
+                  </ul>
+                )
+              }
+
+              {
+                p.limits && (
+                  <p class="edge">
+                    <span class="label">Rough edge</span>
+                    {p.limits[0]}
+                  </p>
+                )
+              }
+
+              <ul class="h-tags stack">
+                {p.stack.map((t) => <li class="h-tag">{t}</li>)}
+              </ul>
+            </article>
+          </li>
+        );
+      })
+    }
+  </ul>
+</HomeSection>
+
+<style>
+  /* ─── Shared pieces ─── */
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+  }
+
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid color-mix(in srgb, var(--hue) 32%, transparent);
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--hue) 14%, transparent);
+    color: color-mix(in srgb, var(--hue) 75%, var(--fg));
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+  }
+
+  .part {
+    padding-inline: 9px;
+    font-size: 0.6875rem;
+  }
+
+  .summary {
+    color: var(--fg-muted);
+    font-size: 0.9688rem;
+    line-height: 1.6;
+  }
+
+  .edge {
+    display: grid;
+    gap: 4px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line-strong);
+    color: var(--fg-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .edge .label {
+    color: var(--fg-subtle);
+  }
+
+  .go {
+    display: inline-flex;
+    margin-left: auto;
+    color: var(--fg-subtle);
+    transition:
+      transform 0.3s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  .h-card:is(:hover, :focus-within) .go {
+    color: var(--accent-text);
+    transform: translate(3px, -3px);
+  }
+
+  /* ─── Flagship ─── */
+  .feature {
+    display: grid;
+    gap: clamp(28px, 4vw, 52px);
+    padding: clamp(22px, 3.6vw, 48px);
+  }
+
+  @media (min-width: 980px) {
+    .feature {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  .main {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+    min-width: 0;
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 2rem + 5.4vw, 6.25rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .lead {
+    max-width: 38rem;
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--line);
+  }
+
+  .tiles > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 18px;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+  }
+
+  .num-big {
+    order: -1;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 1.3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+  }
+
+  .tiles dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--fg-subtle);
+  }
+
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: 4px;
+    font-weight: 600;
+    color: var(--accent-text);
+  }
+
+  .nudge {
+    display: inline-flex;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .feature:is(:hover, :focus-within) .nudge {
+    transform: translateX(4px);
+  }
+
+  /* A call graph behind the terminal: Eulix is a code-graph tool */
+  .art {
+    display: none;
+    position: absolute;
+    inset: 0 0 0 38%;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: 0 var(--r-lg) var(--r-lg) 0;
+    opacity: 0.8;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(ellipse 72% 72% at 62% 50%, #000 22%, transparent 100%);
+    mask-image: radial-gradient(ellipse 72% 72% at 62% 50%, #000 22%, transparent 100%);
+  }
+
+  @media (min-width: 980px) {
+    .art {
+      display: block;
+    }
+  }
+
+  .demo {
+    min-width: 0;
+    align-self: center;
+  }
+
+  .code {
+    margin: 0;
+    overflow-x: auto;
+    padding: 20px 22px;
+    font-size: clamp(0.78rem, 0.7rem + 0.25vw, 0.875rem);
+    line-height: 1.85;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+
+  .tl {
+    display: block;
+    white-space: pre;
+  }
+
+  .tl.gap {
+    height: 0.9em;
+  }
+
+  /* ─── Bento ─── */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(14px, 1.8vw, 20px);
+    margin-top: clamp(14px, 1.8vw, 20px);
+    list-style: none;
+    padding: 0;
+  }
+
+  .cell {
+    display: flex;
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 700px) {
+    .cell {
+      grid-column: span 6;
+    }
+
+    .cell:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .cell,
+    .cell:last-child:nth-child(odd) {
+      grid-column: span var(--span);
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    padding: clamp(20px, 2.6vw, 30px);
+  }
+
+  .title {
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 1.3rem + 1.3vw, 2.3rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    list-style: none;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--fg-subtle);
+  }
+
+  .facts b {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  /* Pushes the stack to the bottom edge so tag rows line up across a row of unequal cards */
+  .stack {
+    margin-top: auto;
+    padding-top: 6px;
+  }
+</style>

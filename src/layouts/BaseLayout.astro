@@ -7,9 +7,26 @@ import Footer from '../components/Footer.astro';
 import { site, socials, mastodon } from '../data/site.js';
 import { skills } from '../data/profile.js';
 
-const { title = site.title, description = site.description, current, noindex = false } = Astro.props;
+// `page="home"` opts into the home page palette (styles/home.css), and `page="eulix"` into the Eulix landing page's
+// own style (styles/eulix.css). Every other page keeps the monochrome theme.
+// `chrome={false}` swaps the portfolio's nav and footer for the page's own, passed in the `header` and `footer` slots.
+// `image` is an optional social preview, as a path on this site.
+const { title = site.title, description = site.description, current, noindex = false, page, chrome = true, image } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Browser UI colour should match the page background. On the home page an inline script in <head> also adds
+// a `js` class, so sections can wait to fade in only when scripting is on (see components/home/HomeEffects.astro).
+const palette = page === 'home' ? site.palette : undefined;
+const themeColor =
+  page === 'eulix'
+    ? { dark: '#0d1220', light: '#f5f6fb' }
+    : page === 'home' && palette !== 'mono'
+      ? { dark: '#0c0a09', light: '#fbf7f1' }
+      : { dark: '#0a0a0a', light: '#fafafa' };
+const preview = image ? new URL(image, Astro.site) : undefined;
+// These pages fade sections in on scroll, which needs a flag set before first paint
+const scripted = page === 'home' || page === 'eulix';
 
 const person = {
   '@context': 'https://schema.org',
@@ -26,7 +43,7 @@ const person = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page={page} data-palette={palette}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,8 +52,8 @@ const person = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
 
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={themeColor.dark} media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content={themeColor.light} media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -47,7 +64,9 @@ const person = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    {preview && <meta property="og:image" content={preview} />}
+    <meta name="twitter:card" content={preview ? 'summary_large_image' : 'summary'} />
+    {preview && <meta name="twitter:image" content={preview} />}
 
     <script type="application/ld+json" set:html={JSON.stringify(person)} />
 
@@ -58,14 +77,16 @@ const person = {
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
       } catch {}
     </script>
+    {scripted && <script is:inline>document.documentElement.classList.add('js')</script>}
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Nav current={current} />
+    {chrome ? <Nav current={current} /> : <slot name="header" />}
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    {chrome ? <Footer /> : <slot name="footer" />}
 
     <script>
       // Any element with data-copy="text" copies that text on click

@@ -1,4 +1,8 @@
 ---
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+// Same file the CSS above points at, so the headline font starts loading with the HTML instead of after the CSS
+import displayFont from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import '../styles/home.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
 import About from '../components/home/About.astro';
@@ -8,21 +12,24 @@ import OpenSource from '../components/home/OpenSource.astro';
 import Misc from '../components/home/Misc.astro';
 import WritingPreview from '../components/home/WritingPreview.astro';
 import Contact from '../components/home/Contact.astro';
+import HomeEffects from '../components/home/HomeEffects.astro';
 import { getTotalDownloads } from '../lib/stats.js';
 import { getPosts } from '../lib/writing.js';
 
 const downloads = await getTotalDownloads();
 const posts = (await getPosts()).slice(0, 3);
-const hasWriting = posts.length > 0;
 ---
 
-<BaseLayout>
+<!-- `page="home"` switches on the home palette (styles/home.css). The other pages keep the monochrome theme. -->
+<BaseLayout page="home">
+  <link slot="head" rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
   <Hero downloads={downloads} />
   <About />
   <Experience />
   <Projects />
   <OpenSource />
   <Misc />
-  {hasWriting && <WritingPreview posts={posts} />}
-  <Contact index={hasWriting ? '08' : '07'} />
+  {posts.length > 0 && <WritingPreview posts={posts} />}
+  <Contact />
+  <HomeEffects />
 </BaseLayout>
