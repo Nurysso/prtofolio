@@ -1,0 +1,21 @@
+---
+// Section frame for the home page: a path-style eyebrow and a display heading.
+// Styles live in styles/home.css (.h-section, .h-head, .h-eyebrow, .h-title).
+//
+//   <HomeSection id="work" path="projects">
+//     <Fragment slot="title">Selected <span class="hl">projects</span></Fragment>
+//     ...content...
+//   </HomeSection>
+const { id, path } = Astro.props;
+const headingId = `${id}-title`;
+---
+
+<section id={id} class="h-section" aria-labelledby={headingId}>
+  <div class="container">
+    <header class="h-head" data-reveal>
+      <p class="h-eyebrow"><span><b>~/</b>{path}</span></p>
+      <h2 id={headingId} class="h-title"><slot name="title" /></h2>
+    </header>
+    <slot />
+  </div>
+</section>

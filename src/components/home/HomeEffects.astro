@@ -1,0 +1,88 @@
+---
+// Behaviour shared by the home sections: fade-in on scroll and the nav's
+// scrolled state, progress bar and current-section marker.
+//
+// Everything degrades to the plain page. Without scripting nothing is hidden, and with reduced motion
+// nothing animates. The hero has its own script because it only concerns the hero.
+---
+
+<script is:inline>
+  // Sections stay hidden only while the script below is expected to start. If it has not by 3 s
+  // (blocked or failed), drop the `js` class so every section shows.
+  setTimeout(function () {
+    if (!document.documentElement.dataset.ready) document.documentElement.classList.remove('js');
+  }, 3000);
+</script>
+
+<script>
+  const root = document.documentElement;
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Fade-in on scroll ───
+  const reveals = document.querySelectorAll('[data-reveal]');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach((el) => el.classList.add('is-in'));
+  } else {
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          seen.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+    );
+    reveals.forEach((el) => seen.observe(el));
+  }
+
+  // ─── Nav: solid once scrolled, a reading-progress line, and the current section ───
+  const nav = document.querySelector('[data-nav]');
+  if (nav) {
+    const bar = document.createElement('span');
+    bar.className = 'nav-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    nav.append(bar);
+
+    let queued = false;
+    const update = () => {
+      queued = false;
+      nav.toggleAttribute('data-scrolled', scrollY > 8);
+      const max = root.scrollHeight - innerHeight;
+      bar.style.setProperty('--p', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : '0');
+    };
+    const schedule = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule);
+    update();
+
+    // Each section belongs to one nav link; sections with no link of their own clear the marker
+    const links = new Map();
+    nav.querySelectorAll('.links a[href^="/#"]').forEach((a) => links.set(a.getAttribute('href').slice(2), a));
+    const owner = { about: 'about', experience: 'about', work: 'work', oss: 'work', contact: 'contact' };
+
+    const mark = (sectionId) => {
+      const current = links.get(owner[sectionId]);
+      links.forEach((a) => (a === current ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+
+    // A thin band across the middle of the viewport decides which section is "current"
+    const band = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) if (entry.isIntersecting) mark(entry.target.id);
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    for (const id of [...Object.keys(owner), 'misc', 'writing']) {
+      const section = document.getElementById(id);
+      if (section) band.observe(section);
+    }
+  }
+
+  root.dataset.ready = '1';
+</script>

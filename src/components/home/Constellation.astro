@@ -1,0 +1,115 @@
+---
+// Decorative graph: nodes, links, a few accent hubs and pulses that travel along some links.
+// Generated at build time from a seed (lib/constellation.js), so there is no client-side drawing.
+import { constellation } from '../../lib/constellation.js';
+
+const { seed = 11, count = 34, width = 640, height = 560, class: className } = Astro.props;
+const g = constellation({ seed, count, width, height });
+const { nodes } = g;
+const line = ([a, b]) => `M${nodes[a].x} ${nodes[a].y}L${nodes[b].x} ${nodes[b].y}`;
+---
+
+<svg class:list={['cn', className]} viewBox={`0 0 ${width} ${height}`} aria-hidden="true" focusable="false">
+  <g class="far">
+    {g.edges.map((edge) => <path class="link" d={line(edge)} />)}
+  </g>
+  <g class="near">
+    {
+      g.pulses.map((edge, i) => (
+        <>
+          <path class="spark" d={line(edge)} pathLength="100" style={`--d:${((i * 1.7) % 6).toFixed(1)}s`} />
+        </>
+      ))
+    }
+    {
+      nodes.map((n, i) =>
+        n.hub ? (
+          <>
+            <circle class="hub" cx={n.x} cy={n.y} r="4.6" />
+          </>
+        ) : (
+          <circle class:list={['star', { tw: i % 3 === 0 }]} cx={n.x} cy={n.y} r="2.5" style={`--d:${((i * 0.37) % 4).toFixed(1)}s`} />
+        )
+      )
+    }
+  </g>
+</svg>
+
+<style>
+  .cn {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Two depth layers: the pointer parallax (--px, --py, set by the hero) moves them by different amounts */
+  .far,
+  .near {
+    transition: transform 0.9s var(--ease-out, ease-out);
+  }
+
+  .far {
+    transform: translate(calc(var(--px, 0) * -10px), calc(var(--py, 0) * -10px));
+  }
+
+  .near {
+    transform: translate(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -22px));
+  }
+
+  .link {
+    fill: none;
+    stroke: var(--cn-line);
+    stroke-width: 1;
+  }
+
+  .star {
+    fill: var(--cn-node);
+  }
+
+  .tw {
+    animation: twinkle 4.2s ease-in-out var(--d, 0s) infinite;
+  }
+
+  .hub {
+    fill: var(--accent);
+  }
+
+  .spark {
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 9 91;
+    animation: travel 5.6s linear var(--d, 0s) infinite;
+  }
+
+  .spark {
+    stroke: var(--accent);
+    stroke-width: 1.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spark {
+      display: none;
+    }
+  }
+
+  @keyframes travel {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+</style>

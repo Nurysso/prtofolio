@@ -1,0 +1,22 @@
+---
+// Inline icon from lib/icons.js. Decorative by default: put the meaning in the surrounding text or aria-label.
+import { icons, FILLED } from '../../lib/icons.js';
+
+const { name, size = 20, class: className } = Astro.props;
+const filled = FILLED.has(name);
+---
+
+<svg
+  class:list={['icon', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill={filled ? 'currentColor' : 'none'}
+  stroke={filled ? 'none' : 'currentColor'}
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={icons[name]}
+/>

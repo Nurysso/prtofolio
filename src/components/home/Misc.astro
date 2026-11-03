@@ -1,51 +1,110 @@
 ---
-import Section from '../Section.astro';
+import HomeSection from './HomeSection.astro';
+import Icon from './Icon.astro';
 import { misc } from '../../data/profile.js';
+
+// The glyph is picked from each entry's wording, so reordering the data keeps the right icon on the right card
+const iconFor = ({ org, title }) => {
+  const text = `${org} ${title}`;
+  if (/harvard|delegate|international/i.test(text)) return 'globe';
+  if (/mentor|hackathon/i.test(text)) return 'users';
+  if (/draw/i.test(text)) return 'pencil';
+  if (/bak/i.test(text)) return 'cake';
+  return 'sparkles';
+};
+
+const hues = ['aqua', 'ember', 'rose', 'amber'];
 ---
 
-<Section id="misc" index="06" label="Misc" title="Random SH3T I DiD">
-  <ul class="ruled grid">
+<HomeSection id="misc" path="outside-the-editor">
+  <Fragment slot="title">Outside the <span class="hl">editor</span></Fragment>
+
+  <ul class="grid">
     {
-      misc.map((item) => (
-        <li class="item">
-          <p class="label">{item.org}</p>
-          <h3 class="h3">{item.title}</h3>
-          <p class="desc">{item.desc}</p>
+      misc.map((item, i) => (
+        <li class="item h-card" data-spot data-reveal style={`--hue: var(--hue-${hues[i % hues.length]}); --i:${i % 2}`}>
+          <span class="tile">
+            <Icon name={iconFor(item)} size={22} />
+          </span>
+          <div class="text">
+            <p class="org">{item.org}</p>
+            <h3 class="title">{item.title}</h3>
+            {item.desc && <p class="desc">{item.desc}</p>}
+          </div>
         </li>
       ))
     }
   </ul>
-</Section>
+</HomeSection>
 
 <style>
   .grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  @media (min-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .grid > li:last-child:nth-child(odd) {
-      grid-column: 1 / -1;
-    }
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(14px, 1.8vw, 20px);
+    list-style: none;
+    padding: 0;
   }
 
   .item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-3);
-    padding: clamp(20px, 3vw, 32px);
+    display: grid;
+    grid-column: 1 / -1;
+    gap: 20px;
+    align-content: start;
+    padding: clamp(20px, 2.8vw, 32px);
   }
 
-  .label {
-    text-transform: none;
-    letter-spacing: 0;
+  @media (min-width: 700px) {
+    .item {
+      grid-column: span 6;
+    }
+  }
+
+  /* Rows of 7+5 then 6+6, so the long entry gets the wider cell */
+  @media (min-width: 960px) {
+    .item:nth-child(4n + 1) {
+      grid-column: span 7;
+    }
+
+    .item:nth-child(4n + 2) {
+      grid-column: span 5;
+    }
+  }
+
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid color-mix(in srgb, var(--hue) 32%, transparent);
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--hue) 14%, transparent);
+    color: color-mix(in srgb, var(--hue) 75%, var(--fg));
+  }
+
+  .text {
+    display: grid;
+    gap: 10px;
+  }
+
+  .org {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--fg-subtle);
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1.1rem + 0.9vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
   }
 
   .desc {
+    max-width: 30rem;
+    font-size: 0.9688rem;
     color: var(--fg-muted);
-    font-size: 0.9375rem;
   }
 </style>

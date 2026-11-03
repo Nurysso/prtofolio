@@ -1,138 +1,213 @@
 ---
-import { site, socials } from '../../data/site.js';
+import Icon from './Icon.astro';
+import HatTiling from './HatTiling.astro';
+import { site, socials, mastodon } from '../../data/site.js';
+import { socialIcon } from '../../lib/icons.js';
 
-const { index } = Astro.props;
+const links = [...socials, { label: 'Mastodon', href: mastodon }];
 ---
 
 <section id="contact" class="contact" aria-labelledby="contact-title">
   <div class="container">
-    <div class="box">
-      <p class="label"><span class="idx">{index}</span> / Contact</p>
-
-      <h2 id="contact-title" class="title">Got a hard backend <br />or tooling problem?</h2>
-      <p class="sub">Open to freelance contracts and full-time roles. Email me what you're building.</p>
-
-      <div class="email-row">
-        <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
-        <button type="button" class="copy" data-copy={site.email} aria-label="Copy email address">copy</button>
+    <div class="panel h-card" data-reveal>
+      <div class="art" aria-hidden="true">
+        <HatTiling name="hat-contact" width={24.8} height={20} offset={[-30, 18]} rotate={19} />
       </div>
 
-      <ul class="socials">
-        {
-          socials.map((s) => (
-            <li>
-              <a href={s.href} target="_blank" rel="noopener noreferrer">
-                {s.label} <span aria-hidden="true">↗</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="inner">
+        <p class="h-eyebrow"><span><b>~/</b>contact</span></p>
+
+        <h2 id="contact-title" class="title">
+          Got a hard backend <br />or <span class="hl">tooling problem?</span>
+        </h2>
+        <p class="sub">Open to freelance contracts and full-time roles. Email me what you're building.</p>
+
+        <div class="email-row">
+          <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+          <button type="button" class="copy" data-copy={site.email} aria-label="Copy email address">copy</button>
+        </div>
+
+        <ul class="socials">
+          {
+            links.map((s) => (
+              <li>
+                <a class="social" href={s.href} target="_blank" rel="noopener noreferrer">
+                  <Icon name={socialIcon(s.label)} size={18} />
+                  {s.label}
+                  <span class="go"><Icon name="arrow-up-right" size={14} /></span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .contact {
-    border-top: 1px solid var(--line);
-    padding-block: var(--section-y);
+    padding-block: clamp(40px, 6vw, 80px) var(--section-y);
   }
 
-  /* Inverted block: the one place the palette flips */
-  .box {
-    --muted: color-mix(in srgb, var(--inv-fg) 62%, var(--inv-bg));
+  .panel {
+    overflow: hidden;
     padding: clamp(28px, 6vw, 80px);
-    background: var(--inv-bg);
-    color: var(--inv-fg);
+    border-radius: clamp(var(--r-lg), 3vw, 36px);
+    background: var(--card-bg);
   }
 
-  .box ::selection {
-    background: var(--inv-fg);
-    color: var(--inv-bg);
+  .art {
+    position: absolute;
+    top: 50%;
+    right: -8%;
+    z-index: -1;
+    width: min(46rem, 80%);
+    aspect-ratio: 520 / 420;
+    transform: translateY(-50%);
+    opacity: 0.7;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(closest-side, #000 50%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 50%, transparent 100%);
   }
 
-  .box :focus-visible {
-    outline-color: var(--inv-fg);
+  /* On narrow screens the text runs under the tiling, so it is fainter there and gone on phones */
+  @media (max-width: 899px) {
+    .art {
+      opacity: 0.35;
+    }
   }
 
-  .label,
-  .label .idx {
-    color: var(--muted);
+  @media (max-width: 599px) {
+    .art {
+      display: none;
+    }
+  }
+
+  .inner {
+    display: grid;
+    gap: 0;
+    justify-items: start;
   }
 
   .title {
-    margin-top: clamp(24px, 4vw, 40px);
-    font-size: clamp(2rem, 1.2rem + 3.6vw, 4.25rem);
-    line-height: 1;
-    letter-spacing: -0.04em;
+    margin-top: clamp(22px, 3.5vw, 36px);
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 1.2rem + 4.4vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
   }
 
   .sub {
-    margin-top: var(--s-4);
-    color: var(--muted);
-    font-size: 1.0625rem;
+    max-width: 34rem;
+    margin-top: 18px;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    color: var(--fg-muted);
   }
 
   .email-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--s-3) var(--s-4);
-    margin-top: clamp(32px, 5vw, 56px);
+    gap: 14px 18px;
+    margin-top: clamp(30px, 5vw, 52px);
   }
 
   .email {
-    font-family: var(--font-mono);
-    font-size: clamp(1.0625rem, 0.8rem + 1.4vw, 1.875rem);
-    font-weight: 500;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 0.7rem + 2.5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
     overflow-wrap: anywhere;
     text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
+    text-underline-offset: 8px;
+    transition: text-decoration-color 0.2s var(--ease-out);
   }
 
   .email:hover {
-    text-decoration-thickness: 2px;
+    text-decoration-color: var(--accent);
   }
 
+  /* The click handler in BaseLayout swaps this button's text to "copied", so the icon is drawn with CSS */
   .copy {
-    min-height: 36px;
-    padding-inline: var(--s-3);
-    border: 1px solid var(--inv-fg);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--card-bg);
+    color: var(--fg-muted);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     transition:
-      background-color var(--dur) var(--ease),
-      color var(--dur) var(--ease);
+      border-color 0.2s var(--ease-out),
+      color 0.2s var(--ease-out),
+      background-color 0.2s var(--ease-out);
+  }
+
+  .copy::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='14' height='14' x='8' y='8' rx='2'/%3E%3Cpath d='M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2'/%3E%3C/svg%3E") center / contain no-repeat;
   }
 
   .copy:hover {
-    background: var(--inv-fg);
-    color: var(--inv-bg);
+    border-color: var(--accent);
+    color: var(--accent-text);
+    background: var(--card-bg-hover);
   }
 
   .socials {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s-2) var(--s-6);
-    margin-top: var(--s-6);
-    padding: var(--s-5) 0 0;
-    border-top: 1px solid color-mix(in srgb, var(--inv-fg) 20%, var(--inv-bg));
+    gap: 10px;
+    margin-top: clamp(30px, 4.5vw, 48px);
     list-style: none;
+    padding: 0;
   }
 
-  .socials a {
+  .social {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
-    font-family: var(--font-mono);
+    gap: 10px;
+    min-height: 46px;
+    padding: 0 18px 0 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--card-bg);
     font-size: 0.9375rem;
+    font-weight: 500;
     text-decoration: none;
+    transition:
+      border-color 0.2s var(--ease-out),
+      background-color 0.2s var(--ease-out),
+      transform 0.25s var(--ease-out);
   }
 
-  .socials a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .social .go {
+    display: inline-flex;
+    color: var(--fg-subtle);
+    transition:
+      transform 0.25s var(--ease-out),
+      color 0.2s var(--ease-out);
+  }
+
+  .social:hover {
+    border-color: var(--accent);
+    background: var(--card-bg-hover);
+    transform: translateY(-2px);
+  }
+
+  .social:hover .go {
+    color: var(--accent-text);
+    transform: translate(2px, -2px);
   }
 </style>
